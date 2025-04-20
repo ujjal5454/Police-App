@@ -1,0 +1,335 @@
+.incident-details-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.incident-details-container * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.incident-details-container img {
+  overflow-clip-margin: content-box;
+  overflow: clip;
+}
+
+.incident-details-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 500px;
+  overflow: hidden;
+}
+
+/* Override inherited styles for file type labels */
+.incident-details-card .upload-item .file-type-label {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: none !important;
+  border: none !important;
+  width: auto !important;
+  min-width: auto !important;
+  box-shadow: none !important;
+}
+
+.incident-details-card .upload-item .file-type-label img {
+  width: 24px !important;
+  height: 24px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  object-fit: contain !important;
+}
+
+.incident-details-card .upload-item .file-type-label span {
+  color: #333 !important;
+  font-size: 15px !important;
+  font-weight: normal !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-transform: none !important;
+}
+
+.incident-details-card .upload-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 12px !important;
+  border-bottom: 1px solid #eee !important;
+  background: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  width: 100% !important;
+}
+
+.incident-details-card .file-size {
+  color: #666 !important;
+  font-size: 14px !important;
+  margin-left: auto !important;
+  margin-right: 12px !important;
+}
+
+.incident-details-card .upload-item label {
+  color: #0088cc !important;
+  cursor: pointer !important;
+  font-size: 14px !important;
+  text-decoration: none !important;
+  padding: 6px 12px !important;
+  border-radius: 4px !important;
+  background: #f8f9fa !important;
+  border: 1px solid #dee2e6 !important;
+  margin: 0 !important;
+}
+
+.incident-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #0088cc;
+  color: white;
+  border-radius: 8px 8px 0 0;
+  position: relative;
+}
+
+.incident-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+  color: white;
+}
+
+.back-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.back-button svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  color: black;
+}
+
+.incident-form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.description-input {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.description-input:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+}
+
+.location-selector {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  margin: 1rem 0;
+  transition: background-color 0.2s;
+  color: black;
+  font-size: 15px;
+}
+
+.location-selector:hover {
+  background-color: #e8e8e8;
+}
+
+.upload-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.upload-section {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.upload-section label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  color: #333;
+}
+
+.upload-section:hover {
+  border-color: #1a73e8;
+  background: #f8f9fa;
+}
+
+.upload-section input[type="file"] {
+  display: none;
+}
+
+.upload-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.preview-section {
+  display: grid;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.file-preview-container {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+
+.file-preview {
+  width: 100%;
+  aspect-ratio: 16/9;
+  position: relative;
+}
+
+.file-preview img,
+.file-preview video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.file-counter {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  z-index: 10;
+}
+
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-button.prev {
+  left: 8px;
+}
+
+.nav-button.next {
+  right: 8px;
+}
+
+.delete-button {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-button svg {
+  width: 20px;
+  height: 20px;
+  fill: white;
+}
+
+.submit-button {
+  background: #1a73e8;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.submit-button:hover {
+  background: #1557b0;
+}
+
+.submit-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 14px;
+  margin-top: 8px;
+  padding: 8px;
+  background: #ffebee;
+  border-radius: 4px;
+} 

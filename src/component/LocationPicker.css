@@ -1,0 +1,179 @@
+.location-picker-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.location-picker-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 500px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 30px);
+}
+
+.location-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #0088cc;
+  color: white;
+  position: relative;
+}
+
+.location-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  flex: 1;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+  z-index: 1;
+}
+
+.back-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.search-container {
+  padding: 0.75rem;
+  background: white;
+  border-bottom: 1px solid #eee;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.search-container form {
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 4px;
+  border: 3px solid #e0e0e0;
+}
+
+.search-container input {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  outline: none;
+  color: #333;
+}
+
+.search-container input::placeholder {
+  color: #666;
+}
+
+.location-picker-card .search-container .search-button {
+  min-width: unset;
+  width: auto;
+  height: auto;
+  background: none;
+  border: none;
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: all 0.2s ease;
+  box-shadow: none;
+  margin: 0;
+  border-radius: 50%;
+}
+
+.location-picker-card .search-container .search-button:hover {
+  transform: scale(1.1);
+  color: #1a73e8;
+  background: none;
+}
+
+.location-picker-card .search-container .search-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.map-container {
+  flex: 1;
+  position: relative;
+  z-index: 0;
+}
+
+.location-footer {
+  background: white;
+  padding: 1rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.selected-location {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.location-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.location-text {
+  font-size: 14px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.confirm-button {
+  background: #1a73e8;
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s;
+}
+
+.confirm-button:hover {
+  background: #1557b0;
+}
+
+/* Leaflet map overrides */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  border-radius: 0;
+} 
