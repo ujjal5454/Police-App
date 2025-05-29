@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { incidentService } from '../services/api';
 import './IncidentDetails.css';
 import locationIcon from '../assets/icons/location.png';
@@ -10,25 +10,45 @@ import videoIcon from '../assets/icons/video.png';
 const IncidentDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [viewMode, setViewMode] = useState(false);
   
   const [formData, setFormData] = useState(() => {
-    const initialState = {
-      type: location.state?.fromReportIncident ? 'Domestic Violence' : '',
-      description: location.state?.previousFormData?.description || '',
-      location: location.state?.selectedLocation || {
-        coordinates: null,
-        address: ''
-      },
-      media: {
-        images: location.state?.previousFormData?.media?.images || [],
-        audio: location.state?.previousFormData?.media?.audio || [],
-        video: location.state?.previousFormData?.media?.video || []
-      }
-    };
-    console.log('Initializing form data:', initialState);
-    return initialState;
+    if (location.state?.incident) {
+      // View mode - coming from My Incidents
+      const incident = location.state.incident;
+      return {
+        type: incident.type || '',
+        description: incident.description || '',
+        location: incident.location || {
+          coordinates: null,
+          address: ''
+        },
+        media: {
+          images: incident.media?.images || [],
+          audio: incident.media?.audio || [],
+          video: incident.media?.video || []
+        },
+        status: incident.status
+      };
+    } else {
+      // Create mode - coming from Report Incident
+      return {
+        type: location.state?.fromReportIncident ? 'Domestic Violence' : '',
+        description: location.state?.previousFormData?.description || '',
+        location: location.state?.selectedLocation || {
+          coordinates: null,
+          address: ''
+        },
+        media: {
+          images: location.state?.previousFormData?.media?.images || [],
+          audio: location.state?.previousFormData?.media?.audio || [],
+          video: location.state?.previousFormData?.media?.video || []
+        }
+      };
+    }
   });
 
   const [currentFileIndices, setCurrentFileIndices] = useState({
@@ -42,8 +62,42 @@ const IncidentDetails = () => {
     video: formData.media.video.map(f => f.url) || []
   }));
 
+  useEffect(() => {
+    if (id) {
+      setViewMode(true);
+      fetchIncidentDetails();
+    }
+  }, [id]);
+
+  const fetchIncidentDetails = async () => {
+    try {
+      setLoading(true);
+      const response = await incidentService.getIncidentById(id);
+      setFormData({
+        type: response.data.type || '',
+        description: response.data.description || '',
+        location: response.data.location || {
+          coordinates: null,
+          address: ''
+        },
+        media: {
+          images: response.data.media?.images || [],
+          audio: response.data.media?.audio || [],
+          video: response.data.media?.video || []
+        },
+        status: response.data.status
+      });
+    } catch (err) {
+      setError('Failed to fetch incident details');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleBack = () => {
-    if (location.state?.fromReportIncident) {
+    if (location.state?.fromMyIncidents) {
+      navigate('/my-incidents');
+    } else if (location.state?.fromReportIncident) {
       navigate('/report-incident');
     } else {
       navigate('/home');
@@ -227,57 +281,71 @@ const IncidentDetails = () => {
             value={formData.description}
             onChange={handleDescriptionChange}
             required
+            readOnly={viewMode}
           />
 
-          <button
-            type="button"
-            className="location-selector"
-            onClick={handleLocationSelect}
-          >
-            <img src={locationIcon} alt="Location" className="icon" />
-            {formData.location.address || 'Choose Incident Location'}
-          </button>
-
-          <div className="upload-sections">
-            <div className="upload-section">
-              <label>
-                <img src={imageIcon} alt="Upload Images" className="upload-icon" />
-                Images (Max 10MB each)
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={(e) => handleFileUpload('images', e.target.files)}
-                />
-              </label>
+          {viewMode ? (
+            <div className="location-display">
+              <img src={locationIcon} alt="Location" className="icon" />
+              {formData.location.address || 'No location specified'}
             </div>
+          ) : (
+            <button
+              type="button"
+              className="location-selector"
+              onClick={handleLocationSelect}
+            >
+              <img src={locationIcon} alt="Location" className="icon" />
+              {formData.location.address || 'Choose Incident Location'}
+            </button>
+          )}
 
-            <div className="upload-section">
-              <label>
-                <img src={audioIcon} alt="Upload Audio" className="upload-icon" />
-                Audio (Max 10MB each)
-                <input
-                  type="file"
-                  accept="audio/*"
-                  multiple
-                  onChange={(e) => handleFileUpload('audio', e.target.files)}
-                />
-              </label>
+          {viewMode ? (
+            <div className="status-display">
+              <strong>Status:</strong> {formData.status}
             </div>
+          ) : (
+            <div className="upload-sections">
+              <div className="upload-section">
+                <label>
+                  <img src={imageIcon} alt="Upload Images" className="upload-icon" />
+                  Images (Max 10MB each)
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={(e) => handleFileUpload('images', e.target.files)}
+                  />
+                </label>
+              </div>
 
-            <div className="upload-section">
-              <label>
-                <img src={videoIcon} alt="Upload Video" className="upload-icon" />
-                Video (Max 50MB each)
-                <input
-                  type="file"
-                  accept="video/*"
-                  multiple
-                  onChange={(e) => handleFileUpload('video', e.target.files)}
-                />
-              </label>
+              <div className="upload-section">
+                <label>
+                  <img src={audioIcon} alt="Upload Audio" className="upload-icon" />
+                  Audio (Max 10MB each)
+                  <input
+                    type="file"
+                    accept="audio/*"
+                    multiple
+                    onChange={(e) => handleFileUpload('audio', e.target.files)}
+                  />
+                </label>
+              </div>
+
+              <div className="upload-section">
+                <label>
+                  <img src={videoIcon} alt="Upload Video" className="upload-icon" />
+                  Video (Max 50MB each)
+                  <input
+                    type="file"
+                    accept="video/*"
+                    multiple
+                    onChange={(e) => handleFileUpload('video', e.target.files)}
+                  />
+                </label>
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="preview-section">
             {formData.media.images.map((file, index) => (
@@ -293,13 +361,15 @@ const IncidentDetails = () => {
 
           {error && <div className="error-message">{error}</div>}
 
-          <button
-            type="submit"
-            className="submit-button"
-            disabled={loading}
-          >
-            {loading ? 'Submitting...' : 'Submit'}
-          </button>
+          {!viewMode && (
+            <button
+              type="submit"
+              className="submit-button"
+              disabled={loading}
+            >
+              {loading ? 'Submitting...' : 'Submit'}
+            </button>
+          )}
         </form>
       </div>
     </div>

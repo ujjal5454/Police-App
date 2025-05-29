@@ -8,6 +8,8 @@ import Home from "./component/Home";
 import ReportIncident from "./component/ReportIncident";
 import IncidentDetails from "./component/IncidentDetails";
 import LocationPicker from './component/LocationPicker';
+import MyIncidents from './component/MyIncidents';
+import DateRangePicker from './component/DateRangePicker';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -46,9 +48,24 @@ function App() {
               <IncidentDetails />
             </ProtectedRoute>
           } />
+          <Route path="/incident-details/:id" element={
+            <ProtectedRoute>
+              <IncidentDetails />
+            </ProtectedRoute>
+          } />
           <Route path="/location-picker" element={
             <ProtectedRoute>
               <LocationPicker />
+            </ProtectedRoute>
+          } />
+          <Route path="/my-incidents" element={
+            <ProtectedRoute>
+              <MyIncidents />
+            </ProtectedRoute>
+          } />
+          <Route path="/date-range-picker" element={
+            <ProtectedRoute>
+              <DateRangePicker />
             </ProtectedRoute>
           } />
         </Routes>

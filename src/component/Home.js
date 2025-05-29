@@ -24,6 +24,20 @@ const Home = () => {
   const location = useLocation();
   const showSignIn = location.state?.fromSkip;
 
+  const handleServiceClick = (title) => {
+    switch (title) {
+      case 'Report Incident':
+        navigate('/report-incident');
+        break;
+      case 'My Incidents':
+        navigate('/my-incidents');
+        break;
+      default:
+        // Handle other services
+        break;
+    }
+  };
+
   const services = [
     {
       id: 1,
@@ -107,11 +121,7 @@ const Home = () => {
             <div 
               key={service.id} 
               className="service-item"
-              onClick={() => {
-                if (service.title === 'Report Incident') {
-                  navigate('/report-incident');
-                }
-              }}
+              onClick={() => handleServiceClick(service.title)}
             >
               <img src={service.icon} alt={service.title} />
               <p>{service.title}</p>

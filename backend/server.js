@@ -11,11 +11,26 @@ dotenv.config();
 // Create Express app
 const app = express();
 
-// Middleware
+// Middleware - CORS configuration
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001'];
+
 app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
+
+// Handle preflight requests for all routes
+app.options('*', cors());
+
+// Body parsing and cookies
 app.use(express.json());
 app.use(cookieParser());
 
@@ -25,7 +40,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NODE_ENV === 'production', // true in production
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
@@ -50,4 +65,4 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-}); 
+});

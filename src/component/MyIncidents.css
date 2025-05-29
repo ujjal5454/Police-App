@@ -1,0 +1,271 @@
+.my-incidents-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.incidents-header {
+  background: #0088cc;
+  color: white;
+  width: 100%;
+  max-width: 500px;
+  padding: 1rem;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.incidents-header h1 {
+  flex: 1;
+  margin: 0;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.back-button, .filter-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.back-button:hover, .filter-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.filter-menu {
+  background: white;
+  width: 100%;
+  max-width: 500px;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.filter-section {
+  flex: 1;
+}
+
+.filter-section h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.filter-section select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.date-range .date-inputs {
+  display: flex;
+  gap: 1rem;
+}
+
+.date-input {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.date-input label {
+  font-size: 13px;
+  color: #666;
+}
+
+.date-input input[type="date"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+}
+
+.date-input input[type="date"]:focus {
+  outline: none;
+  border-color: #0088cc;
+  box-shadow: 0 0 0 2px rgba(0, 136, 204, 0.2);
+}
+
+.search-container {
+  width: 100%;
+  max-width: 500px;
+  padding: 1rem;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #0088cc;
+  box-shadow: 0 0 0 2px rgba(0, 136, 204, 0.2);
+}
+
+.incidents-list {
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  border-radius: 0 0 12px 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  padding-bottom: 1rem;
+}
+
+.incident-card {
+  display: flex;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  gap: 1rem;
+  margin: 10px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.incident-card:hover {
+  background-color: #f8f9fa;
+}
+
+.incident-card:last-child {
+  border-bottom: none;
+}
+
+.incident-icon {
+  font-size: 24px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.incident-details {
+  flex: 1;
+}
+
+.incident-details h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.incident-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  font-size: 13px;
+}
+
+.incident-info p {
+  margin: 0;
+}
+
+.incident-info strong {
+  color: #666;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.incident-id {
+  word-break: break-all;
+}
+
+.loading, .error, .no-incidents {
+  width: 100%;
+  max-width: 500px;
+  padding: 1rem;
+  text-align: center;
+  background: white;
+  color: #666;
+}
+
+.error {
+  color: #d32f2f;
+  background: #ffebee;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+
+/* Status colors */
+.status {
+  font-weight: 500;
+}
+
+.status[style*="color: green"] {
+  color: #2e7d32 !important;
+}
+
+.status[style*="color: red"] {
+  color: #d32f2f !important;
+}
+
+.status[style*="color: orange"] {
+  color: #ed6c02 !important;
+}
+
+.status[style*="color: gray"] {
+  color: #757575 !important;
+}
+
+.date-range-button {
+  width: 100%;
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.date-range-button:hover {
+  background: #f0f0f0;
+  border-color: #0088cc;
+}
+
+.date-range-button .edit-icon {
+  opacity: 0.6;
+  margin-left: 8px;
+}
+
+.date-range-button:hover .edit-icon {
+  opacity: 1;
+} 
