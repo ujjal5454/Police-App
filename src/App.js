@@ -12,6 +12,7 @@ import MyIncidents from './component/MyIncidents';
 import DateRangePicker from './component/DateRangePicker';
 import EmergencyContact from './component/EmergencyContact';
 import BloodBank from './component/BloodBank';
+import BloodBankList from './component/BloodBankList';
 
 const ProtectedRoute = ({ children, allowSkip = false }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -81,6 +82,11 @@ function App() {
           <Route path="/blood-bank" element={
             <ProtectedRoute allowSkip={true}>
               <BloodBank />
+            </ProtectedRoute>
+          } />
+          <Route path="/blood-bank-list" element={
+            <ProtectedRoute allowSkip={true}>
+              <BloodBankList />
             </ProtectedRoute>
           } />
         </Routes>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
@@ -21,54 +21,18 @@ L.Icon.Default.mergeOptions({
 //   iconAnchor: [15, 15]
 // });
 
+// Sample blood bank locations in Nepal (major only for map)
+const bloodBankLocations = [
+  { id: 1, name: 'Central Blood Bank', address: 'Kathmandu, Nepal', phone: '01-4225344', position: [27.7172, 85.3240] },
+  { id: 2, name: 'Bir Hospital Blood Bank', address: 'Mahaboudha, Kathmandu', phone: '01-4221119', position: [27.7056, 85.3137] },
+  { id: 3, name: 'Teaching Hospital Blood Bank', address: 'Maharajgunj, Kathmandu', phone: '01-4412303', position: [27.7394, 85.3350] },
+  { id: 4, name: 'Patan Hospital Blood Bank', address: 'Lagankhel, Lalitpur', phone: '01-5522266', position: [27.6588, 85.3247] },
+  { id: 5, name: 'Bhaktapur Hospital Blood Bank', address: 'Bhaktapur, Nepal', phone: '01-6610798', position: [27.6710, 85.4298] },
+];
+
 const BloodBank = () => {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
   const [userLocation, setUserLocation] = useState(null);
-
-  // Sample blood bank locations in Nepal
-  const bloodBankLocations = [
-    {
-      id: 1,
-      name: "Central Blood Bank",
-      address: "Kathmandu, Nepal",
-      phone: "01-4225344",
-      position: [27.7172, 85.3240],
-      count: "15"
-    },
-    {
-      id: 2,
-      name: "Bir Hospital Blood Bank",
-      address: "Mahaboudha, Kathmandu",
-      phone: "01-4221119",
-      position: [27.7056, 85.3137],
-      count: "19"
-    },
-    {
-      id: 3,
-      name: "Teaching Hospital Blood Bank",
-      address: "Maharajgunj, Kathmandu",
-      phone: "01-4412303",
-      position: [27.7394, 85.3350],
-      count: "12"
-    },
-    {
-      id: 4,
-      name: "Patan Hospital Blood Bank",
-      address: "Lagankhel, Lalitpur",
-      phone: "01-5522266",
-      position: [27.6588, 85.3247],
-      count: "8"
-    },
-    {
-      id: 5,
-      name: "Bhaktapur Hospital Blood Bank",
-      address: "Bhaktapur, Nepal",
-      phone: "01-6610798",
-      position: [27.6710, 85.4298],
-      count: "6"
-    }
-  ];
 
   const handleBack = () => {
     navigate('/emergency-contact');
@@ -85,7 +49,6 @@ const BloodBank = () => {
           setUserLocation([position.coords.latitude, position.coords.longitude]);
         },
         (error) => {
-          console.error('Error getting location:', error);
           alert('Unable to get your location. Please enable location services.');
         }
       );
@@ -94,18 +57,12 @@ const BloodBank = () => {
     }
   };
 
-  // Filter blood banks based on search query
-  const filteredBloodBanks = bloodBankLocations.filter(bank =>
-    bank.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    bank.address.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const handleListClick = () => {
+    navigate('/blood-bank-list');
+  };
 
   // Default center (Kathmandu, Nepal)
   const mapCenter = userLocation || [27.7172, 85.3240];
-
-  // Debug log
-  console.log('Map center:', mapCenter);
-  console.log('Filtered blood banks:', filteredBloodBanks);
 
   return (
     <div className="blood-bank-container">
@@ -120,21 +77,6 @@ const BloodBank = () => {
           <div className="blood-bank-spacer"></div>
         </div>
 
-        <div className="blood-bank-search-container">
-          <div className="blood-bank-search-wrapper">
-            <input
-              type="text"
-              placeholder="Search Blood Bank"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="blood-bank-search-input"
-            />
-            <svg className="blood-bank-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-        </div>
-
         <div className="blood-bank-map-container">
           <div style={{
             height: '500px',
@@ -144,7 +86,7 @@ const BloodBank = () => {
             border: '1px solid #ddd'
           }}>
             <MapContainer
-              center={[27.7172, 85.3240]}
+              center={mapCenter}
               zoom={12}
               style={{ height: '100%', width: '100%', zIndex: 1 }}
               className="blood-bank-map"
@@ -153,8 +95,7 @@ const BloodBank = () => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               />
-
-              {filteredBloodBanks.map((bank) => (
+              {bloodBankLocations.map((bank) => (
                 <Marker
                   key={bank.id}
                   position={bank.position}
@@ -174,7 +115,6 @@ const BloodBank = () => {
                   </Popup>
                 </Marker>
               ))}
-
               {userLocation && (
                 <Marker position={userLocation}>
                   <Popup>Your Location</Popup>
@@ -189,7 +129,7 @@ const BloodBank = () => {
             </svg>
           </button>
 
-          <button className="blood-bank-list-btn">
+          <button className="blood-bank-list-btn" onClick={handleListClick}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" fill="white"/>
             </svg>
