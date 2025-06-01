@@ -11,14 +11,24 @@
   position: absolute;
   top: 20px;
   right: 20px;
+  z-index: 1000;
 }
 
 .skip-button button {
-  background: none;
-  border: none;
-  color: #666;
+  background: #0088cc;
+  border: 1px solid #0088cc;
+  color: white;
   font-size: 16px;
   cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.skip-button button:hover {
+  background: #006699;
+  border-color: #006699;
+  transform: translateY(-1px);
 }
 
 .login-box {
@@ -100,7 +110,21 @@
 .signin-section h2 {
   font-size: 24px;
   color: #333;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
+}
+
+.demo-info {
+  background: #e3f2fd;
+  border: 1px solid #2196f3;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.demo-info p {
+  margin: 0;
+  font-size: 14px;
+  color: #1976d2;
 }
 
 .input-group {

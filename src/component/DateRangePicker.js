@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './DateRangePicker.css';
 
 const NEPALI_MONTHS = [
@@ -12,7 +12,6 @@ const DAYS_OF_WEEK = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 const DateRangePicker = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [selectedDates, setSelectedDates] = useState({
     startDate: null,
     endDate: null

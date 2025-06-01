@@ -8,11 +8,17 @@ const dotenv = require('dotenv');
 // Load environment variables
 dotenv.config();
 
+// Debug environment variables
+console.log('Environment variables loaded:');
+console.log('MONGODB_URI:', process.env.MONGODB_URI ? 'Set' : 'Not set');
+console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'Set' : 'Not set');
+console.log('SESSION_SECRET:', process.env.SESSION_SECRET ? 'Set' : 'Not set');
+
 // Create Express app
 const app = express();
 
 // Middleware - CORS configuration
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001'];
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'];
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -47,9 +53,15 @@ app.use(session({
 }));
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
+const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/police_db';
+console.log('Attempting to connect to MongoDB with URI:', mongoUri);
+
+mongoose.connect(mongoUri)
   .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+    console.log('Server will continue running without database connection');
+  });
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));

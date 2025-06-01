@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Login from "./component/Login";
 import Signup from "./component/Signup";
@@ -11,18 +11,21 @@ import LocationPicker from './component/LocationPicker';
 import MyIncidents from './component/MyIncidents';
 import DateRangePicker from './component/DateRangePicker';
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, allowSkip = false }) => {
   const { isAuthenticated, loading } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to="/" />;
+  // Allow access if user is authenticated OR if coming from skip and allowSkip is true
+  const isFromSkip = location.state?.fromSkip;
+  if (isAuthenticated || (allowSkip && isFromSkip)) {
+    return children;
   }
 
-  return children;
+  return <Navigate to="/" />;
 };
 
 function App() {
@@ -34,7 +37,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/home" element={
-            <ProtectedRoute>
+            <ProtectedRoute allowSkip={true}>
               <Home />
             </ProtectedRoute>
           } />

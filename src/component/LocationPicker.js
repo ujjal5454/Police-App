@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
 import { useNavigate, useLocation } from 'react-router-dom';
 import 'leaflet/dist/leaflet.css';
@@ -43,23 +43,7 @@ const LocationPicker = () => {
     return existingLocation ? [existingLocation[0], existingLocation[1]] : [27.7172, 85.3240];
   });
 
-  useEffect(() => {
-    // Only get user's location if no existing location is set
-    if (!position) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const newCenter = [pos.coords.latitude, pos.coords.longitude];
-          setMapCenter(newCenter);
-          handleLocationSelect({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-        },
-        (error) => {
-          console.error('Error getting location:', error);
-        }
-      );
-    }
-  }, []);
-
-  const handleLocationSelect = async (latlng) => {
+  const handleLocationSelect = useCallback(async (latlng) => {
     console.log('Selected coordinates:', latlng);
     setPosition(latlng);
     try {
@@ -88,7 +72,23 @@ const LocationPicker = () => {
       console.error('Error getting address:', error);
       setAddress('Location selected');
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    // Only get user's location if no existing location is set
+    if (!position) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const newCenter = [pos.coords.latitude, pos.coords.longitude];
+          setMapCenter(newCenter);
+          handleLocationSelect({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+        }
+      );
+    }
+  }, [position, handleLocationSelect]);
 
   const handleBack = () => {
     const navigationState = {
@@ -97,11 +97,12 @@ const LocationPicker = () => {
         address: address
       } : null,
       previousFormData: location.state?.previousFormData || {},
+      incidentType: location.state?.incidentType,
       fromReportIncident: true
     };
 
     console.log('Navigating back with state:', navigationState);
-    navigate(-1, { state: navigationState });
+    navigate('/incident-details', { state: navigationState, replace: true });
   };
 
   const handleConfirm = () => {
@@ -112,11 +113,12 @@ const LocationPicker = () => {
           address: address
         },
         previousFormData: location.state?.previousFormData || {},
+        incidentType: location.state?.incidentType,
         fromReportIncident: true
       };
 
       console.log('Confirming with state:', navigationState);
-      navigate(-1, { state: navigationState });
+      navigate('/incident-details', { state: navigationState, replace: true });
     }
   };
 

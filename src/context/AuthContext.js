@@ -36,6 +36,10 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data.user);
       return response.data;
     } catch (error) {
+      // Check if it's a network error (backend not available)
+      if (error.code === 'ERR_NETWORK' || error.message === 'Network Error') {
+        throw new Error('Backend server is not available. Please try again later.');
+      }
       throw error.response?.data || { message: 'Login failed' };
     }
   };

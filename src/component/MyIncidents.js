@@ -3,8 +3,25 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { incidentService } from '../services/api';
 import './MyIncidents.css';
 
+// Import incident icons
+import domesticViolenceIcon from '../assets/icons/domestic-violence.png';
+import theftIcon from '../assets/icons/theft.png';
+import fraudIcon from '../assets/icons/fraud.png';
+import explosivesIcon from '../assets/icons/explosives.png';
+import othersIcon from '../assets/icons/others.png';
+import accidentIcon from '../assets/icons/accident.png';
+import attemptMurderIcon from '../assets/icons/attempt-murder.png';
+import disasterIcon from '../assets/icons/disaster.png';
+import drugsIcon from '../assets/icons/drugs.png';
+import emergencyIcon from '../assets/icons/emergency.png';
+import kidnappingIcon from '../assets/icons/kidnapping.png';
+import missingPersonIcon from '../assets/icons/missing-person.png';
+import sexualHarassmentIcon from '../assets/icons/sexual-harassment.png';
+import trafficViolationsIcon from '../assets/icons/traffic-violations.png';
+import wildlifeIcon from '../assets/icons/wildlife.png';
+
 const NEPALI_MONTHS = [
-  'Baishakh', 'Jestha', 'Ashadh', 'Shrawan', 
+  'Baishakh', 'Jestha', 'Ashadh', 'Shrawan',
   'Bhadra', 'Ashwin', 'Kartik', 'Mangsir',
   'Poush', 'Magh', 'Falgun', 'Chaitra'
 ];
@@ -39,12 +56,19 @@ const MyIncidents = () => {
   const fetchIncidents = async () => {
     try {
       setLoading(true);
+      console.log('Fetching incidents...');
       const response = await incidentService.getAllIncidents();
-      if (response && response.data) {
+      console.log('Incidents response:', response);
+
+      if (response && Array.isArray(response)) {
+        setIncidents(response);
+        console.log('Set incidents:', response);
+      } else if (response && response.data && Array.isArray(response.data)) {
         setIncidents(response.data);
+        console.log('Set incidents from data:', response.data);
       } else {
         setIncidents([]);
-        setError('No incidents found');
+        console.log('No incidents found, response:', response);
       }
     } catch (err) {
       console.error('Error fetching incidents:', err);
@@ -85,18 +109,38 @@ const MyIncidents = () => {
 
   const getIncidentIcon = (type) => {
     switch (type?.toLowerCase()) {
-      case 'explosives/weapons':
-        return '💣';
-      case 'theft':
-        return '🕵️';
-      case 'others':
-        return '📦';
-      case 'fraud':
-        return '💰';
       case 'domestic violence':
-        return '🏠';
+        return <img src={domesticViolenceIcon} alt="Domestic Violence" />;
+      case 'theft':
+        return <img src={theftIcon} alt="Theft" />;
+      case 'fraud':
+        return <img src={fraudIcon} alt="Fraud" />;
+      case 'explosives/weapons':
+        return <img src={explosivesIcon} alt="Explosives/Weapons" />;
+      case 'others':
+        return <img src={othersIcon} alt="Others" />;
+      case 'accident':
+        return <img src={accidentIcon} alt="Accident" />;
+      case 'attempt murder':
+        return <img src={attemptMurderIcon} alt="Attempt Murder" />;
+      case 'disaster':
+        return <img src={disasterIcon} alt="Disaster" />;
+      case 'drugs':
+        return <img src={drugsIcon} alt="Drugs" />;
+      case 'emergency':
+        return <img src={emergencyIcon} alt="Emergency" />;
+      case 'kidnapping':
+        return <img src={kidnappingIcon} alt="Kidnapping" />;
+      case 'missing person':
+        return <img src={missingPersonIcon} alt="Missing Person" />;
+      case 'sexual harassment':
+        return <img src={sexualHarassmentIcon} alt="Sexual Harassment" />;
+      case 'traffic violations':
+        return <img src={trafficViolationsIcon} alt="Traffic Violations" />;
+      case 'wildlife':
+        return <img src={wildlifeIcon} alt="Wildlife" />;
       default:
-        return '❓';
+        return <img src={othersIcon} alt="Unknown" />;
     }
   };
 
@@ -189,20 +233,21 @@ const MyIncidents = () => {
   const filteredIncidents = applyFilters(incidents);
 
   return (
-    <div className="my-incidents-container">
-      <div className="incidents-header">
-        <button className="back-button" onClick={handleBack}>
-          <svg width="24" height="24" viewBox="0 0 24 24">
-            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="white"/>
-          </svg>
-        </button>
-        <h1>My Incidents</h1>
-        <button className="filter-button" onClick={() => setFilterOpen(!filterOpen)}>
-          <svg width="24" height="24" viewBox="0 0 24 24">
-            <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z" fill="white"/>
-          </svg>
-        </button>
-      </div>
+    <div className="incidents-main-wrapper">
+      <div className="incidents-content-card">
+        <div className="incidents-top-header">
+          <button className="header-back-btn" onClick={handleBack}>
+            <svg width="24" height="24" viewBox="0 0 24 24">
+              <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="white"/>
+            </svg>
+          </button>
+          <h1>My Incidents</h1>
+          <button className="header-filter-btn" onClick={() => setFilterOpen(!filterOpen)}>
+            <svg width="24" height="24" viewBox="0 0 24 24">
+              <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z" fill="white"/>
+            </svg>
+          </button>
+        </div>
 
       {filterOpen && (
         <div className="filter-menu">
@@ -230,53 +275,63 @@ const MyIncidents = () => {
         </div>
       )}
 
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Search"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="search-input"
-        />
-        {error && <div className="error">{error}</div>}
+      <div className="incidents-search-wrapper">
+        <div className="incidents-search-input-container">
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="incidents-search-field"
+          />
+          <svg className="incidents-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+        {error && <div className="incidents-error-msg">{error}</div>}
       </div>
 
       {loading ? (
-        <div className="loading">Loading incidents...</div>
+        <div className="incidents-loading-msg">Loading incidents...</div>
       ) : filteredIncidents.length === 0 ? (
-        <div className="no-incidents">No incidents found</div>
+        <div className="incidents-no-data">No incidents found</div>
       ) : (
-        <div className="incidents-list">
+        <div className="incidents-data-list">
           {filteredIncidents.map((incident) => (
-            <div 
-              key={incident._id} 
-              className="incident-card"
+            <div
+              key={incident._id}
+              className="incidents-item-card"
               onClick={() => handleIncidentClick(incident)}
             >
-              <div className="incident-icon">
+              <div className="incidents-item-icon">
                 {getIncidentIcon(incident.type)}
               </div>
-              <div className="incident-details">
+              <div className="incidents-item-details">
                 <h3>{incident.type || 'Unknown Type'}</h3>
-                <div className="incident-info">
-                  <p className="incident-id">
-                    <strong>Incident Id</strong><br />
-                    {incident._id}
-                  </p>
-                  <p className="reported-date">
-                    <strong>Reported Date</strong><br />
-                    {formatDate(incident.createdAt)}
-                  </p>
-                  <p className="status" style={{ color: getStatusColor(incident.status) }}>
-                    <strong>Status</strong><br />
-                    {incident.status || 'Unknown'}
-                  </p>
+                <div className="incidents-item-info">
+                  <div className="incidents-item-info-left">
+                    <p className="incidents-item-id">
+                      <strong>Incident Id</strong>
+                      {incident._id}
+                    </p>
+                    <div className="incidents-item-info-row">
+                      <p className="incidents-item-date">
+                        <strong>Reported Date</strong>
+                        {formatDate(incident.createdAt)}
+                      </p>
+                      <p className="incidents-item-status" style={{ color: getStatusColor(incident.status) }}>
+                        <strong>Status</strong>
+                        {incident.status || 'pending'}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 };

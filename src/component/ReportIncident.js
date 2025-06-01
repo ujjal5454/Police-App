@@ -28,8 +28,8 @@ const ReportIncident = () => {
   };
 
   const handleIncidentSelect = (incident) => {
-    navigate('/incident-details', { 
-      state: { 
+    navigate('/incident-details', {
+      state: {
         incidentType: incident.title.replace('\n', ' '),
         fromReportIncident: true
       }
@@ -139,9 +139,14 @@ const ReportIncident = () => {
       </div>
 
       {showInfo && (
-        <div className="info-modal">
-          <div className="info-content">
-            <h2>Information</h2>
+        <div className="info-modal" onClick={() => setShowInfo(false)}>
+          <div className="info-content" onClick={(e) => e.stopPropagation()}>
+            <div className="info-header">
+              <h2>Information</h2>
+              <button className="close-button-x" onClick={() => setShowInfo(false)}>
+                ×
+              </button>
+            </div>
             <div className="info-section">
               <h3>Report an Incident</h3>
               <p>Report incident is used to report different types of incidents that have taken place around you. You can view the incident details reported by you in the "My incidents" section.</p>

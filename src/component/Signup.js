@@ -97,10 +97,7 @@ const Signup = () => {
     return municipalities;
   };
 
-  const handleForgotPassword = (e) => {
-    e.preventDefault();
-    navigate('/forgot-password');
-  };
+
 
   return (
     <div className="signup-container">
@@ -173,7 +170,18 @@ const Signup = () => {
               <img src={require("../assets/icons/email.png")} alt="Email" className="input-icon" />
             </div>
 
-            
+            <div className="input-group">
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                minLength="6"
+              />
+              <img src={require("../assets/icons/hide.png")} alt="Password" className="input-icon" />
+            </div>
 
             {error && <div className="error-message">{error}</div>}
           </div>
