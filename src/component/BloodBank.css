@@ -117,8 +117,9 @@
   flex: 1;
   position: relative;
   overflow: hidden;
-  min-height: 500px;
-  padding: 16px;
+  min-height: calc(100vh - 200px);
+  height: calc(100vh - 200px);
+  padding: 0;
 }
 
 .blood-bank-map {
@@ -227,6 +228,42 @@
 
 .leaflet-popup-tip {
   background: white;
+}
+
+/* Custom cluster icon styling */
+.custom-cluster-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+.custom-blood-bank-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Cluster group animations */
+.marker-cluster-small {
+  background-color: rgba(33, 150, 243, 0.6);
+}
+
+.marker-cluster-small div {
+  background-color: rgba(33, 150, 243, 0.6);
+}
+
+.marker-cluster-medium {
+  background-color: rgba(33, 150, 243, 0.8);
+}
+
+.marker-cluster-medium div {
+  background-color: rgba(33, 150, 243, 0.8);
+}
+
+.marker-cluster-large {
+  background-color: rgba(33, 150, 243, 1);
+}
+
+.marker-cluster-large div {
+  background-color: rgba(33, 150, 243, 1);
 }
 
 /* Responsive design */
