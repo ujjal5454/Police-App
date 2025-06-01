@@ -3,18 +3,32 @@
   background: #f5f5f5;
   display: flex;
   flex-direction: column;
+  padding: 16px;
+}
+
+.date-picker-card {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .date-picker-header {
   background: #0088cc;
   color: white;
-  padding: 1rem;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  min-height: 56px;
 }
 
 .header-title {
@@ -42,7 +56,7 @@
 .close-button,
 .save-button,
 .edit-button {
-  background: none;
+  background: transparent;
   border: none;
   color: white;
   padding: 8px;
@@ -50,8 +64,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 4px;
   transition: background-color 0.2s;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
 }
 
 .close-button:hover,
@@ -64,20 +81,23 @@
   font-size: 16px;
   padding: 8px 16px;
   border-radius: 4px;
+  width: auto;
+  height: auto;
 }
 
 .calendar-container {
   flex: 1;
   padding: 1rem;
   overflow-y: auto;
+  background: white;
 }
 
 .month-section {
-  background: white;
+  background: #f8f9fa;
   border-radius: 8px;
   margin-bottom: 1rem;
   padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .month-section h3 {

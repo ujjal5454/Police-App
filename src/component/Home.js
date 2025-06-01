@@ -32,6 +32,9 @@ const Home = () => {
       case 'My Incidents':
         navigate('/my-incidents');
         break;
+      case 'Emergency Numbers':
+        navigate('/emergency-contact');
+        break;
       default:
         // Handle other services
         break;

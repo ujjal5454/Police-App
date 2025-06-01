@@ -1,0 +1,273 @@
+.blood-bank-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.blood-bank-card {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 600px;
+}
+
+.blood-bank-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #0088cc;
+  color: white;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  min-height: 56px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.blood-bank-header h1 {
+  font-size: 18px;
+  margin: 0;
+  font-weight: 500;
+  text-align: center;
+  flex: 1;
+  color: white;
+}
+
+.blood-bank-back-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.blood-bank-back-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.blood-bank-spacer {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.blood-bank-search-container {
+  background: white;
+  padding: 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.blood-bank-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.blood-bank-search-input {
+  width: 100%;
+  padding: 12px 50px 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  font-size: 16px;
+  background: #f8f9fa;
+  box-sizing: border-box;
+  outline: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.blood-bank-search-input:focus {
+  border-color: #0088cc;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(0, 136, 204, 0.1);
+}
+
+.blood-bank-search-input::placeholder {
+  color: #666;
+  font-weight: 400;
+}
+
+.blood-bank-search-icon {
+  position: absolute;
+  right: 16px;
+  color: #666;
+  pointer-events: none;
+}
+
+.blood-bank-map-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 500px;
+  padding: 16px;
+}
+
+.blood-bank-map {
+  height: 100%;
+  width: 100%;
+}
+
+.blood-bank-location-btn {
+  position: absolute;
+  bottom: 80px;
+  right: 16px;
+  width: 56px;
+  height: 56px;
+  background: #0088cc;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+.blood-bank-location-btn:hover {
+  background: #0077b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.blood-bank-location-btn:active {
+  transform: translateY(0);
+}
+
+.blood-bank-list-btn {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 56px;
+  height: 56px;
+  background: #0088cc;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+.blood-bank-list-btn:hover {
+  background: #0077b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.blood-bank-list-btn:active {
+  transform: translateY(0);
+}
+
+.blood-bank-popup {
+  min-width: 200px;
+  padding: 8px;
+}
+
+.blood-bank-popup h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: #333;
+  font-weight: 600;
+}
+
+.blood-bank-popup p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.blood-bank-call-btn {
+  background: #0088cc;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.blood-bank-call-btn:hover {
+  background: #0077b3;
+}
+
+/* Leaflet popup customization */
+.leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.leaflet-popup-tip {
+  background: white;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .blood-bank-container {
+    padding: 8px;
+  }
+
+  .blood-bank-card {
+    min-height: calc(100vh - 16px);
+  }
+
+  .blood-bank-search-container {
+    padding: 12px;
+  }
+
+  .blood-bank-search-input {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+
+  .blood-bank-location-btn,
+  .blood-bank-list-btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .blood-bank-location-btn {
+    bottom: 72px;
+  }
+}
+
+@media (max-width: 480px) {
+  .blood-bank-header {
+    padding: 8px 12px;
+  }
+
+  .blood-bank-header h1 {
+    font-size: 16px;
+  }
+
+  .blood-bank-search-container {
+    padding: 8px;
+  }
+}

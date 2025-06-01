@@ -282,7 +282,21 @@ const MyIncidents = () => {
             placeholder="Search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="incidents-search-field"
+            className="my-incidents-search-input"
+            style={{
+              width: '100%',
+              padding: '12px 50px 12px 16px',
+              border: 'none',
+              borderRadius: '20px',
+              fontSize: '16px',
+              background: '#f0f0f0',
+              boxSizing: 'border-box',
+              margin: '0',
+              outline: 'none',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif',
+              color: '#333',
+              transition: 'all 0.2s ease'
+            }}
           />
           <svg className="incidents-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
