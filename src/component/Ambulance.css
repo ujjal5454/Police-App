@@ -1,4 +1,4 @@
-.blood-bank-container {
+.ambulance-container {
   min-height: 100vh;
   background-color: #f5f5f5;
   padding: 16px;
@@ -6,7 +6,7 @@
   flex-direction: column;
 }
 
-.blood-bank-card {
+.ambulance-card {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
@@ -20,12 +20,12 @@
   min-height: 600px;
 }
 
-.blood-bank-header {
+.ambulance-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: #0088cc;
+  background: #2196F3;
   color: white;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
@@ -34,7 +34,7 @@
   box-sizing: border-box;
 }
 
-.blood-bank-header h1 {
+.ambulance-header h1 {
   font-size: 18px;
   margin: 0;
   font-weight: 500;
@@ -43,7 +43,7 @@
   color: white;
 }
 
-.blood-bank-back-btn {
+.ambulance-back-btn {
   background: transparent;
   border: none;
   color: white;
@@ -59,29 +59,29 @@
   flex-shrink: 0;
 }
 
-.blood-bank-back-btn:hover {
+.ambulance-back-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.blood-bank-spacer {
+.ambulance-spacer {
   width: 40px;
   height: 40px;
   flex-shrink: 0;
 }
 
-.blood-bank-search-container {
+.ambulance-search-container {
   background: white;
   padding: 16px;
   border-bottom: 1px solid #e0e0e0;
 }
 
-.blood-bank-search-wrapper {
+.ambulance-search-wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.blood-bank-search-input {
+.ambulance-search-input {
   width: 100%;
   padding: 12px 50px 12px 16px;
   border: 1px solid #ddd;
@@ -95,25 +95,25 @@
   transition: all 0.2s ease;
 }
 
-.blood-bank-search-input:focus {
-  border-color: #0088cc;
+.ambulance-search-input:focus {
+  border-color: #2196F3;
   background: white;
-  box-shadow: 0 0 0 3px rgba(0, 136, 204, 0.1);
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
 }
 
-.blood-bank-search-input::placeholder {
+.ambulance-search-input::placeholder {
   color: #666;
   font-weight: 400;
 }
 
-.blood-bank-search-icon {
+.ambulance-search-icon {
   position: absolute;
   right: 16px;
   color: #666;
   pointer-events: none;
 }
 
-.blood-bank-map-container {
+.ambulance-map-container {
   flex: 1;
   position: relative;
   overflow: hidden;
@@ -126,7 +126,7 @@
   z-index: 1;
 }
 
-.blood-bank-map {
+.ambulance-map {
   height: 500px !important;
   width: 100% !important;
   z-index: 1;
@@ -134,7 +134,6 @@
   position: relative;
 }
 
-/* Ensure Leaflet container has proper dimensions */
 .leaflet-container {
   height: 500px !important;
   width: 100% !important;
@@ -142,7 +141,6 @@
   z-index: 1;
 }
 
-/* Fix for Leaflet tiles not loading */
 .leaflet-tile-pane {
   opacity: 1 !important;
 }
@@ -151,13 +149,13 @@
   opacity: 1 !important;
 }
 
-.blood-bank-location-btn {
+.ambulance-location-btn {
   position: absolute;
   bottom: 80px;
   right: 16px;
   width: 56px;
   height: 56px;
-  background: #0088cc;
+  background: #2196F3;
   border: none;
   border-radius: 50%;
   display: flex;
@@ -169,23 +167,23 @@
   z-index: 1000;
 }
 
-.blood-bank-location-btn:hover {
-  background: #0077b3;
+.ambulance-location-btn:hover {
+  background: #1976D2;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
-.blood-bank-location-btn:active {
+.ambulance-location-btn:active {
   transform: translateY(0);
 }
 
-.blood-bank-list-btn {
+.ambulance-list-btn {
   position: absolute;
   bottom: 16px;
   right: 16px;
   width: 56px;
   height: 56px;
-  background: #0088cc;
+  background: #2196F3;
   border: none;
   border-radius: 50%;
   display: flex;
@@ -197,37 +195,37 @@
   z-index: 1000;
 }
 
-.blood-bank-list-btn:hover {
-  background: #0077b3;
+.ambulance-list-btn:hover {
+  background: #1976D2;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
-.blood-bank-list-btn:active {
+.ambulance-list-btn:active {
   transform: translateY(0);
 }
 
-.blood-bank-popup {
+.ambulance-popup {
   min-width: 200px;
   padding: 8px;
 }
 
-.blood-bank-popup h3 {
+.ambulance-popup h3 {
   margin: 0 0 8px 0;
   font-size: 16px;
   color: #333;
   font-weight: 600;
 }
 
-.blood-bank-popup p {
+.ambulance-popup p {
   margin: 4px 0;
   font-size: 14px;
   color: #666;
   line-height: 1.4;
 }
 
-.blood-bank-call-btn {
-  background: #0088cc;
+.ambulance-call-btn {
+  background: #2196F3;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -240,11 +238,10 @@
   width: 100%;
 }
 
-.blood-bank-call-btn:hover {
-  background: #0077b3;
+.ambulance-call-btn:hover {
+  background: #1976D2;
 }
 
-/* Leaflet popup customization */
 .leaflet-popup-content-wrapper {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -254,18 +251,16 @@
   background: white;
 }
 
-/* Custom cluster icon styling */
 .custom-cluster-icon {
   background: transparent !important;
   border: none !important;
 }
 
-.custom-blood-bank-marker {
+.custom-ambulance-marker {
   background: transparent !important;
   border: none !important;
 }
 
-/* Cluster group animations */
 .marker-cluster-small {
   background-color: rgba(33, 150, 243, 0.6);
 }
@@ -290,75 +285,44 @@
   background-color: rgba(33, 150, 243, 1);
 }
 
-/* Category tabs styling */
-.category-tab {
-  background: #e0e0e0;
-  color: #666;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-}
-
-.category-tab:hover {
-  background: #d0d0d0;
-  transform: scale(1.05);
-}
-
-.category-tab.active {
-  background: #0088cc;
-  color: white;
-  transform: scale(1.05);
-  box-shadow: 0 2px 8px rgba(0, 136, 204, 0.3);
-}
-
-.category-tab.active:hover {
-  background: #0077b3;
-}
-
-/* Responsive design */
 @media (max-width: 768px) {
-  .blood-bank-container {
+  .ambulance-container {
     padding: 8px;
   }
 
-  .blood-bank-card {
+  .ambulance-card {
     min-height: calc(100vh - 16px);
   }
 
-  .blood-bank-search-container {
+  .ambulance-search-container {
     padding: 12px;
   }
 
-  .blood-bank-search-input {
-    font-size: 16px; /* Prevent zoom on iOS */
+  .ambulance-search-input {
+    font-size: 16px;
   }
 
-  .blood-bank-location-btn,
-  .blood-bank-list-btn {
+  .ambulance-location-btn,
+  .ambulance-list-btn {
     width: 48px;
     height: 48px;
   }
 
-  .blood-bank-location-btn {
+  .ambulance-location-btn {
     bottom: 72px;
   }
 }
 
 @media (max-width: 480px) {
-  .blood-bank-header {
+  .ambulance-header {
     padding: 8px 12px;
   }
 
-  .blood-bank-header h1 {
+  .ambulance-header h1 {
     font-size: 16px;
   }
 
-  .blood-bank-search-container {
+  .ambulance-search-container {
     padding: 8px;
   }
 }

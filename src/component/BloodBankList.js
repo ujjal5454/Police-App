@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './BloodBank.css';
 
 const categories = [
@@ -49,8 +49,18 @@ const allData = {
 
 const BloodBankList = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('bloodBank');
+
+  // Check URL parameters for category
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const category = urlParams.get('category');
+    if (category && categories.find(c => c.key === category)) {
+      setSelectedCategory(category);
+    }
+  }, [location.search]);
 
   const categoryData = allData[selectedCategory] || [];
   const filteredData = categoryData.filter(item =>
@@ -58,16 +68,29 @@ const BloodBankList = () => {
     item.address.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Dynamic color theming based on category
+  const getThemeColor = () => {
+    switch (selectedCategory) {
+      case 'hospital': return '#4CAF50';
+      case 'fireBrigade': return '#FF9800';
+      case 'ambulance': return '#2196F3';
+      case 'police': return '#1976D2';
+      default: return '#0088cc'; // bloodBank
+    }
+  };
+
+  const themeColor = getThemeColor();
+
   return (
     <div className="blood-bank-container">
       <div className="blood-bank-card">
-        <div className="blood-bank-header">
+        <div className="blood-bank-header" style={{ backgroundColor: themeColor }}>
           <button className="blood-bank-back-btn" onClick={() => navigate(-1)}>
             <svg width="24" height="24" viewBox="0 0 24 24">
               <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="white"/>
             </svg>
           </button>
-          <h1>Blood Bank</h1>
+          <h1>{categories.find(c => c.key === selectedCategory)?.label || 'Blood Bank'}</h1>
           <div className="blood-bank-spacer"></div>
         </div>
 
@@ -79,6 +102,9 @@ const BloodBankList = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="blood-bank-search-input"
+              style={{
+                '--focus-color': themeColor
+              }}
             />
             <svg className="blood-bank-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
               <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -90,6 +116,10 @@ const BloodBankList = () => {
                 key={cat.key}
                 className={selectedCategory === cat.key ? 'category-tab active' : 'category-tab'}
                 onClick={() => setSelectedCategory(cat.key)}
+                style={selectedCategory === cat.key ? {
+                  backgroundColor: themeColor,
+                  borderColor: themeColor
+                } : {}}
               >
                 {cat.label}
               </button>
@@ -103,20 +133,20 @@ const BloodBankList = () => {
           ) : (
             filteredData.map(item => (
               <div key={item.id} className="incidents-item-card" style={{ borderRadius: 12, margin: '12px 16px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }}>
-                <div className="incidents-item-icon" style={{ background: '#e3f2fd' }}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="#0088cc">
+                <div className="incidents-item-icon" style={{ background: `${themeColor}20` }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill={themeColor}>
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                   </svg>
                 </div>
                 <div className="incidents-item-details">
                   <h3 style={{ fontSize: 16, margin: 0 }}>{item.name}</h3>
                   <div style={{ color: '#555', fontSize: 14 }}>{item.address}</div>
-                  <div style={{ color: '#0088cc', fontWeight: 600, fontSize: 15, marginTop: 4 }}>{item.phone}</div>
+                  <div style={{ color: themeColor, fontWeight: 600, fontSize: 15, marginTop: 4 }}>{item.phone}</div>
                 </div>
                 <a
                   href={`tel:${item.phone}`}
                   style={{
-                    background: '#0088cc',
+                    background: themeColor,
                     borderRadius: '50%',
                     width: 40,
                     height: 40,

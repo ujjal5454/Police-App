@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
@@ -96,6 +96,8 @@ const BloodBank = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [userLocation, setUserLocation] = useState(null);
+  const [mapReady, setMapReady] = useState(false);
+
 
   const handleBack = () => {
     navigate('/emergency-contact');
@@ -133,6 +135,29 @@ const BloodBank = () => {
   // Default center (Kathmandu, Nepal)
   const mapCenter = userLocation || [27.7172, 85.3240];
 
+  // Ensure map renders properly
+  useEffect(() => {
+    // Force a re-render after component mounts to fix map display issues
+    const timer = setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 100);
+
+    // Additional timer for map container resize
+    const mapTimer = setTimeout(() => {
+      const mapElements = document.querySelectorAll('.leaflet-container');
+      mapElements.forEach(mapEl => {
+        if (mapEl._leaflet_map) {
+          mapEl._leaflet_map.invalidateSize();
+        }
+      });
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(mapTimer);
+    };
+  }, []);
+
   return (
     <div className="blood-bank-container">
       <div className="blood-bank-card">
@@ -162,15 +187,48 @@ const BloodBank = () => {
         </div>
 
         <div className="blood-bank-map-container">
+          {!mapReady && (
+            <div style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 1000,
+              color: '#0088cc',
+              fontSize: '16px',
+              fontWeight: '500',
+              background: 'white',
+              padding: '20px',
+              borderRadius: '12px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+            }}>
+              Loading map...
+            </div>
+          )}
           <MapContainer
+            key={`blood-bank-map-${Date.now()}`}
             center={mapCenter}
             zoom={7}
-            style={{ height: '100%', width: '100%', zIndex: 1 }}
+            style={{ height: '500px', width: '100%', position: 'relative', zIndex: 1 }}
             className="blood-bank-map"
+            whenCreated={(mapInstance) => {
+              console.log('Map created successfully');
+              setMapReady(true);
+              setTimeout(() => {
+                mapInstance.invalidateSize();
+              }, 100);
+            }}
+            whenReady={() => {
+              console.log('Map is ready');
+              setMapReady(true);
+            }}
           >
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                maxZoom={19}
+                minZoom={1}
+                errorTileUrl="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
               />
 
               <MarkerClusterGroup

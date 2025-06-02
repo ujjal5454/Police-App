@@ -12,6 +12,11 @@ import MyIncidents from './component/MyIncidents';
 import DateRangePicker from './component/DateRangePicker';
 import EmergencyContact from './component/EmergencyContact';
 import BloodBank from './component/BloodBank';
+import BloodBankList from './component/BloodBankList';
+import Hospital from './component/Hospital';
+import FireBrigade from './component/FireBrigade';
+import Ambulance from './component/Ambulance';
+import Police from './component/Police';
 
 const ProtectedRoute = ({ children, allowSkip = false }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -81,6 +86,31 @@ function App() {
           <Route path="/blood-bank" element={
             <ProtectedRoute allowSkip={true}>
               <BloodBank />
+            </ProtectedRoute>
+          } />
+          <Route path="/blood-bank-list" element={
+            <ProtectedRoute allowSkip={true}>
+              <BloodBankList />
+            </ProtectedRoute>
+          } />
+          <Route path="/hospital" element={
+            <ProtectedRoute allowSkip={true}>
+              <Hospital />
+            </ProtectedRoute>
+          } />
+          <Route path="/fire-brigade" element={
+            <ProtectedRoute allowSkip={true}>
+              <FireBrigade />
+            </ProtectedRoute>
+          } />
+          <Route path="/ambulance" element={
+            <ProtectedRoute allowSkip={true}>
+              <Ambulance />
+            </ProtectedRoute>
+          } />
+          <Route path="/police" element={
+            <ProtectedRoute allowSkip={true}>
+              <Police />
             </ProtectedRoute>
           } />
         </Routes>

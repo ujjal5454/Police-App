@@ -18,33 +18,27 @@ const EmergencyContact = () => {
   };
 
   const handleEmergencyCall = (service) => {
-    // Special handling for Blood Bank - navigate to Blood Bank page
-    if (service.title === 'Blood Bank') {
-      navigate('/blood-bank');
-      return;
-    }
-
-    let phoneNumber = '';
-
+    // Navigate to respective component pages
     switch (service.title) {
+      case 'Blood Bank':
+        navigate('/blood-bank');
+        return;
       case 'Hospital':
-        phoneNumber = '102';
-        break;
+        navigate('/hospital');
+        return;
       case 'Fire Brigade':
-        phoneNumber = '101';
-        break;
+        navigate('/fire-brigade');
+        return;
       case 'Ambulance':
-        phoneNumber = '102';
-        break;
+        navigate('/ambulance');
+        return;
       case 'Police':
-        phoneNumber = '100';
-        break;
+        navigate('/police');
+        return;
       default:
-        phoneNumber = '100';
+        // Fallback to phone call
+        window.location.href = `tel:100`;
     }
-
-    // Open phone dialer
-    window.location.href = `tel:${phoneNumber}`;
   };
 
   const emergencyServices = [
@@ -107,7 +101,6 @@ const EmergencyContact = () => {
                 </div>
               </div>
               <p className="emergency-service-title">{service.title}</p>
-              <p className="emergency-service-number">{service.number}</p>
             </div>
           ))}
         </div>
