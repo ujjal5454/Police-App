@@ -17,6 +17,9 @@ import Hospital from './component/Hospital';
 import FireBrigade from './component/FireBrigade';
 import Ambulance from './component/Ambulance';
 import Police from './component/Police';
+import News from './component/News';
+import NewsDetail from './component/NewsDetail';
+import AdminNews from './component/AdminNews';
 
 const ProtectedRoute = ({ children, allowSkip = false }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -111,6 +114,21 @@ function App() {
           <Route path="/police" element={
             <ProtectedRoute allowSkip={true}>
               <Police />
+            </ProtectedRoute>
+          } />
+          <Route path="/news" element={
+            <ProtectedRoute allowSkip={true}>
+              <News />
+            </ProtectedRoute>
+          } />
+          <Route path="/news/:id" element={
+            <ProtectedRoute allowSkip={true}>
+              <NewsDetail />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/news" element={
+            <ProtectedRoute>
+              <AdminNews />
             </ProtectedRoute>
           } />
         </Routes>

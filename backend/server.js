@@ -40,6 +40,9 @@ app.options('*', cors());
 app.use(express.json());
 app.use(cookieParser());
 
+// Serve static files for uploads
+app.use('/uploads', express.static('uploads'));
+
 // Session configuration
 app.use(session({
   secret: process.env.SESSION_SECRET || 'your-secret-key',
@@ -66,6 +69,7 @@ mongoose.connect(mongoUri)
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/incidents', require('./routes/incidents'));
+app.use('/api/news', require('./routes/news'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
