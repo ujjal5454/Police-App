@@ -135,16 +135,20 @@ const Home = () => {
           ))}
         </div>
 
-        <div className="bottom-nav">
-          <button className="nav-btn active">
+        <div className="home-bottom-nav">
+          <button className="home-nav-btn active">
             <img src={homeIcon} alt="Home" />
             <span>Home</span>
           </button>
-          <button className="nav-btn">
+          <button className="home-nav-btn">
             <img src={publicEyeIcon} alt="Public Eye" />
             <span>Public Eye</span>
           </button>
+<<<<<<< HEAD:src/component/Home.js
           <button className="nav-btn">
+=======
+          <button className="home-nav-btn" onClick={() => navigate('/settings')}>
+>>>>>>> 6bac866 (Added part):police/src/component/Home.js
             <img src={settingsIcon} alt="Settings" />
             <span>Settings</span>
           </button>
