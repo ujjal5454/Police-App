@@ -21,3 +21,27 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# OS-specific
+Thumbs.db
+*.swp
+*.swo
+
+# Editor/IDE files
+.vscode/
+.idea/
+
+# React or Next.js specifics
+.next/
+out/
+
+# Media files (if not version-controlled)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+*.mov
+*.psd
+*.ai
+
