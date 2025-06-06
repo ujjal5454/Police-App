@@ -78,12 +78,12 @@ const Home = () => {
     {
       id: 7,
       icon: stationsIcon,
-      title: 'Police Stations\nNearby'
+      title: 'Police Stations Nearby'
     },
     {
       id: 8,
       icon: clearanceIcon,
-      title: 'Police Clearance\nReport'
+      title: 'Police Clearance Report'
     },
     {
       id: 9,
@@ -140,10 +140,10 @@ const Home = () => {
             <img src={homeIcon} alt="Home" />
             <span>Home</span>
           </button>
-          <button className="nav-btn">
+          <div className="fab-center" onClick={() => navigate('/public-eye')}>
             <img src={publicEyeIcon} alt="Public Eye" />
             <span>Public Eye</span>
-          </button>
+          </div>
           <button className="home-nav-btn" onClick={() => navigate('/settings')}>
             <img src={settingsIcon} alt="Settings" />
             <span>Settings</span>
