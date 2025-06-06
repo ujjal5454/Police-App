@@ -2,11 +2,8 @@
   min-height: 100vh;
   background-color: #f5f5f5;
   padding: 16px;
-  padding-bottom: 0;
   display: flex;
   flex-direction: column;
-  max-width: 450px;
-  margin: 0 auto;
 }
 
 .home-card {
@@ -17,6 +14,8 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
   width: 100%;
   position: relative;
 }
@@ -123,7 +122,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
   padding: 24px;
-  padding-bottom: 24px;
+  padding-bottom: 100px;
 }
 
 .service-item {
@@ -149,224 +148,63 @@
   line-height: 1.3;
 }
 
-/* Bottom Navigation - Part of Home Container */
-.home-bottom-nav {
-  background: #1976D2 !important;
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-  padding: 12px 20px !important;
-  border-radius: 20px 20px 12px 12px !important;
-  height: 70px !important;
-  margin-top: auto !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-  position: relative !important;
+.bottom-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #003366;
+  padding: 12px -13px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 12px 12px 0 0;
 }
 
-.home-nav-btn {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 4px !important;
-  background: none !important;
-  border: none !important;
-  color: rgba(255, 255, 255, 0.7) !important;
-  cursor: pointer !important;
-  padding: 8px 16px !important;
-  transition: none !important;
-  flex: 1 !important;
-  max-width: 80px !important;
-  height: 100% !important;
+.nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0;
+  min-width: 64px;
 }
 
-.home-nav-btn img {
-  width: 24px !important;
-  height: 24px !important;
-  filter: brightness(0) invert(1) !important;
-  opacity: 0.7 !important;
+.nav-btn img {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) invert(1);
 }
 
-.home-nav-btn span {
-  font-size: 12px !important;
-  color: rgba(255, 255, 255, 0.7) !important;
-  font-weight: 400 !important;
-  margin-top: 2px !important;
+.nav-btn span {
+  font-size: 12px;
+  color: white;
 }
 
-.home-nav-btn.active {
-  color: #FFD700 !important;
+.nav-btn.active span {
+  color: #ffeb3b;
 }
 
-.home-nav-btn.active span {
-  color: #FFD700 !important;
+.nav-btn:nth-child(2) {
+  background: #0088cc;
+  width: 56px;
+  height: 56px;
+  padding: 16px;
+  border-radius: 50%;
+  margin-bottom: 24px;
+  transform: translateY(-24px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
-.home-nav-btn.active img {
-  opacity: 1 !important;
-  filter: brightness(0) invert(1) sepia(1) saturate(10) hue-rotate(45deg) !important;
-}
-
-/* Special styling for Public Eye button (middle button) */
-.home-nav-btn:nth-child(2) {
-  background: #0088cc !important;
-  width: 55px !important;
-  height: 55px !important;
-  padding: 0 !important;
-  border-radius: 50% !important;
-  margin-bottom: 0 !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
-  position: absolute !important;
-  left: 50% !important;
-  top: 0 !important;
-  transform: translateX(-50%) translateY(-50%) !important;
-  flex: none !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  z-index: 10 !important;
-}
-
-.home-nav-btn:nth-child(2) img {
-  width: 24px !important;
-  height: 24px !important;
-  filter: brightness(0) invert(1) !important;
-  opacity: 1 !important;
-}
-
-.home-nav-btn:nth-child(2) span {
-  position: absolute !important;
-  bottom: -25px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  white-space: nowrap !important;
-  color: rgba(255, 255, 255, 0.9) !important;
-  font-size: 11px !important;
-}
-
-/* Responsive Design for Bottom Navigation */
-@media (max-width: 480px) {
-  .home-container {
-    max-width: 100% !important;
-    padding: 12px !important;
-  }
-
-  .home-bottom-nav {
-    padding: 10px 16px !important;
-    height: 65px !important;
-  }
-
-  .home-nav-btn {
-    padding: 6px 12px !important;
-    max-width: 70px !important;
-  }
-
-  .home-nav-btn img {
-    width: 20px !important;
-    height: 20px !important;
-  }
-
-  .home-nav-btn span {
-    font-size: 10px !important;
-  }
-
-  .home-nav-btn:nth-child(2) {
-    width: 50px !important;
-    height: 50px !important;
-    transform: translateX(-50%) translateY(-50%) !important;
-  }
-
-  .home-nav-btn:nth-child(2) img {
-    width: 22px !important;
-    height: 22px !important;
-  }
-
-  .home-nav-btn:nth-child(2) span {
-    bottom: -22px !important;
-    font-size: 10px !important;
-  }
-}
-
-@media (min-width: 768px) {
-  .home-container {
-    max-width: 500px !important;
-  }
-
-  .home-bottom-nav {
-    padding: 12px 25px !important;
-    height: 75px !important;
-    border-radius: 25px 25px 12px 12px !important;
-  }
-
-  .home-nav-btn {
-    padding: 8px 18px !important;
-    max-width: 90px !important;
-  }
-
-  .home-nav-btn img {
-    width: 24px !important;
-    height: 24px !important;
-  }
-
-  .home-nav-btn span {
-    font-size: 12px !important;
-  }
-
-  .home-nav-btn:nth-child(2) {
-    width: 60px !important;
-    height: 60px !important;
-    transform: translateX(-50%) translateY(-50%) !important;
-  }
-
-  .home-nav-btn:nth-child(2) img {
-    width: 26px !important;
-    height: 26px !important;
-  }
-
-  .home-nav-btn:nth-child(2) span {
-    bottom: -25px !important;
-    font-size: 12px !important;
-  }
-}
-
-@media (min-width: 1024px) {
-  .home-container {
-    max-width: 550px !important;
-  }
-
-  .home-bottom-nav {
-    padding: 15px 30px !important;
-    height: 80px !important;
-  }
-
-  .home-nav-btn {
-    padding: 10px 20px !important;
-    max-width: 100px !important;
-  }
-
-  .home-nav-btn img {
-    width: 26px !important;
-    height: 26px !important;
-  }
-
-  .home-nav-btn span {
-    font-size: 13px !important;
-  }
-
-  .home-nav-btn:nth-child(2) {
-    width: 65px !important;
-    height: 65px !important;
-    transform: translateX(-50%) translateY(-50%) !important;
-  }
-
-  .home-nav-btn:nth-child(2) img {
-    width: 28px !important;
-    height: 28px !important;
-  }
-
-  .home-nav-btn:nth-child(2) span {
-    bottom: -28px !important;
-    font-size: 13px !important;
-  }
-}
+.nav-btn:nth-child(2) span {
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+} 
