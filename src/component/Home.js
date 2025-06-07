@@ -135,15 +135,15 @@ const Home = () => {
           ))}
         </div>
 
-        <div className="bottom-nav">
+        <div className="custom-bottom-nav">
           <button className="nav-btn active">
             <img src={homeIcon} alt="Home" />
             <span>Home</span>
           </button>
           <div className="fab-center" onClick={() => navigate('/public-eye')}>
             <img src={publicEyeIcon} alt="Public Eye" />
-            <span>Public Eye</span>
           </div>
+          <div className="fab-label">Public Eye</div>
           <button className="home-nav-btn" onClick={() => navigate('/settings')}>
             <img src={settingsIcon} alt="Settings" />
             <span>Settings</span>
