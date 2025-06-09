@@ -1,44 +1,222 @@
-import React, { useState } from 'react';
-import { FaUserEdit, FaLock, FaFingerprint, FaBell, FaLanguage, FaPalette, FaExclamationTriangle, FaSignOutAlt } from 'react-icons/fa';
-import logo from '../assets/logo.png';
-import BottomNavigation from './BottomNavigation';
-import { useAuth } from '../context/AuthContext';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './Home.css';
 
 const Settings = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  // State for toggles and modals
-  const [biometric, setBiometric] = useState(false);
-  const [notifications, setNotifications] = useState(true);
-  const [panicMode, setPanicMode] = useState(false);
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [language, setLanguage] = useState('English');
-  const [theme, setTheme] = useState('Light');
-  const [showLanguageModal, setShowLanguageModal] = useState(false);
-  const [showThemeModal, setShowThemeModal] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [settings, setSettings] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [editProfileOpen, setEditProfileOpen] = useState(false);
+  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
+  const [languageModalOpen, setLanguageModalOpen] = useState(false);
+  const [themeModalOpen, setThemeModalOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Password modal state
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  // Form states
+  const [editForm, setEditForm] = useState({
+    fullName: '',
+    email: ''
+  });
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
 
-  // Handlers
-  const handlePasswordChange = (e) => {
+  useEffect(() => {
+    loadUserData();
+    loadUserSettings();
+    
+    // Load theme from localStorage
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      setIsDarkMode(true);
+      document.body.classList.add('dark');
+    }
+  }, []);
+
+  const loadUserData = async () => {
+    try {
+      const response = await fetch('/api/user');
+      const userData = await response.json();
+      setUserData(userData);
+      setEditForm({
+        fullName: userData.fullName,
+        email: userData.email
+      });
+    } catch (error) {
+      showToast('Failed to load user data', 'error');
+    }
+  };
+
+  const loadUserSettings = async () => {
+    try {
+      const response = await fetch('/api/user/settings');
+      const settingsData = await response.json();
+      setSettings(settingsData);
+      setLoading(false);
+    } catch (error) {
+      showToast('Failed to load settings', 'error');
+      setLoading(false);
+    }
+  };
+
+  const updateSetting = async (key, value) => {
+    try {
+      const response = await fetch('/api/user/settings', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ [key]: value }),
+      });
+      
+      if (response.ok) {
+        const updatedSettings = await response.json();
+        setSettings(updatedSettings);
+        
+        if (key === 'theme') {
+          localStorage.setItem('theme', value.toLowerCase());
+        }
+      }
+    } catch (error) {
+      showToast('Failed to update setting', 'error');
+    }
+  };
+
+  const handleEditProfile = async (e) => {
     e.preventDefault();
-    setShowPasswordModal(false);
-    setCurrentPassword('');
-    setNewPassword('');
-    setConfirmPassword('');
-    alert('Password changed!');
+    try {
+      const response = await fetch('/api/user', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editForm),
+      });
+      
+      if (response.ok) {
+        const updatedUser = await response.json();
+        setUserData(updatedUser);
+        setEditProfileOpen(false);
+        showToast('Profile updated successfully!');
+      }
+    } catch (error) {
+      showToast('Failed to update profile', 'error');
+    }
   };
 
-  const handleLogout = async () => {
-    await logout();
-    navigate('/');
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+    
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      showToast('Passwords do not match', 'error');
+      return;
+    }
+    
+    if (passwordForm.newPassword.length < 6) {
+      showToast('Password must be at least 6 characters', 'error');
+      return;
+    }
+    
+    try {
+      const response = await fetch('/api/user/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(passwordForm),
+      });
+      
+      if (response.ok) {
+        setChangePasswordOpen(false);
+        setPasswordForm({
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: ''
+        });
+        showToast('Password changed successfully!');
+      } else {
+        const error = await response.json();
+        showToast(error.message || 'Failed to change password', 'error');
+      }
+    } catch (error) {
+      showToast('Failed to change password', 'error');
+    }
   };
+
+  const handleThemeChange = (theme) => {
+    const isDark = theme === 'Dark';
+    setIsDarkMode(isDark);
+    
+    if (isDark) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+    
+    updateSetting('theme', theme);
+    setThemeModalOpen(false);
+    showToast('Theme updated successfully!');
+  };
+
+  const handleLanguageChange = (language) => {
+    updateSetting('language', language);
+    setLanguageModalOpen(false);
+    showToast('Language updated successfully!');
+  };
+
+  const showToast = (message, type = 'success') => {
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: ${type === 'error' ? '#ef4444' : '#10b981'};
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      z-index: 1001;
+      transform: translateX(400px);
+      transition: transform 0.3s ease;
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.style.transform = 'translateX(0)';
+    }, 100);
+    
+    setTimeout(() => {
+      toast.style.transform = 'translateX(400px)';
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.remove();
+        }
+      }, 300);
+    }, 3000);
+  };
+
+  if (loading) {
+    return (
+      <div className="max-w-md mx-auto bg-white dark:bg-gray-900 min-h-screen">
+        <div className="p-4">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
+            <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
+            <div className="h-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="home-container">
