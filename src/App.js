@@ -62,6 +62,11 @@ function App() {
               <IncidentDetails />
             </ProtectedRoute>
           } />
+          <Route path="/settings" element={
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>
+          } />
           <Route path="/incident-details/:id" element={
             <ProtectedRoute>
               <IncidentDetails />
