@@ -242,10 +242,12 @@ const Settings = () => {
             <img src={homeIcon} alt="Home" />
             <span>Home</span>
           </button>
-          <div className="fab-center" onClick={() => navigate('/public-eye')}>
-            <img src={publicEyeIcon} alt="Public Eye" />
+          <div className="fab-container">
+            <div className="fab-center" onClick={() => navigate('/public-eye')}>
+              <img src={publicEyeIcon} alt="Public Eye" />
+            </div>
+            <div className="settings-fab-label">Public Eye</div>
           </div>
-          <div className="fab-label">Public Eye</div>
           <button className="home-nav-btn active">
             <img src={settingsIcon} alt="Settings" />
             <span>Settings</span>
