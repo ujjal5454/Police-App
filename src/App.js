@@ -21,6 +21,7 @@ import News from './component/News';
 import NewsDetail from './component/NewsDetail';
 import AdminNews from './component/AdminNews';
 import Settings from './component/Settings';
+import PublicEye from './component/PublicEye';
 
 const ProtectedRoute = ({ children, allowSkip = false }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -140,6 +141,12 @@ function App() {
           <Route path="/settings" element={
             <ProtectedRoute allowSkip={true}>
               <Settings />
+            </ProtectedRoute>
+          } />
+          <Route path="/login" element={<Login />} />
+          <Route path="/public-eye" element={
+            <ProtectedRoute allowSkip={true}>
+              <PublicEye />
             </ProtectedRoute>
           } />
         </Routes>

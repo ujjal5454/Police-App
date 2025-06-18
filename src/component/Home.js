@@ -141,7 +141,7 @@ const Home = () => {
             <span>Home</span>
           </button>
           <div className="fab-container">
-            <div className="fab-center" onClick={() => navigate('/public-eye')}>
+            <div className="home-fab-center" onClick={() => navigate('/public-eye')}>
               <img src={publicEyeIcon} alt="Public Eye" />
             </div>
             <div className="fab-label">Public Eye</div>

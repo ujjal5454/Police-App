@@ -20,8 +20,8 @@
   width: 100%;
   position: relative;
   padding: 20px;
-  padding-bottom: 90px; /* Increased to provide more space for the bottom nav */
-  min-height: calc(100vh - 32px);
+  padding-bottom: 90px; /* Increased padding for bottom nav */
+  min-height: 100vh; /* Increased height to fill most of the viewport */
 }
 
 .settings-title {
@@ -33,7 +33,7 @@
 }
 
 .settings-edit-btn {
-  margin-left: auto;
+  /* margin-left: auto; */
   background: none;
   border: none;
   cursor: pointer;
@@ -45,8 +45,32 @@
   justify-content: end;
 }
 
-.settings-edit-btn:hover {
-  background: none;
+.settings-edit-btn,
+.logout-button {
+  width: auto !important;
+  padding: 6px 16px !important;
+  background: none !important;
+  color: inherit !important;
+  border: none !important;
+  border-radius: 50% !important;
+  font-size: inherit !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: none !important;
+}
+
+.logout-button {
+  border-radius: 8px !important;
+  color: #dc2626 !important;
+  font-weight: 500 !important;
+  background: none !important;
+  padding: 8px 20px !important;
+  width: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
 }
 
 /* Profile card styles */
@@ -217,7 +241,7 @@
 .social-button {
   width: 3rem;
   height: 3rem;
-  border-radius: 0.5rem;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -347,22 +371,43 @@
   color: #ffeb3b;
 }
 
-.fab-center {
+.settings .fab-center {
   background: #1976d2;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  z-index: 31;
+  cursor: pointer;
+  left: unset;
+  transform: unset;
+  bottom: unset;
+}
+
+.settings-fab-center {
+  background: #1976d2;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) translateY(80%);
+  bottom: 20px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.18);
   z-index: 20;
   cursor: pointer;
-  transform: translateY(20%);
 }
 
-.fab-center img {
+.settings-fab-center img {
   width: 36px;
   height: 36px;
   filter: brightness(0) invert(1);
@@ -370,27 +415,27 @@
 
 .fab-container {
   position: absolute;
-  left: 48%; /* Slightly to the left */
-  bottom: 50%; /* Position it in the middle of the nav bar */
-  transform: translateX(-50%) translateY(50%);
+  left: 54%;
+  bottom: 70px;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   z-index: 30;
+  width: 0;
 }
 
 .settings-fab-label {
-  margin-top: 4px;
+ position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(100% + 44px);
   color: white;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 500;
   white-space: nowrap;
   z-index: 21;
   pointer-events: none;
-  position: absolute;
-  bottom: -20px;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 /* Responsive adjustments */

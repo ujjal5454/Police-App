@@ -98,11 +98,14 @@ const LocationPicker = () => {
       } : null,
       previousFormData: location.state?.previousFormData || {},
       incidentType: location.state?.incidentType,
-      fromReportIncident: true
+      fromReportIncident: location.state?.fromReportIncident,
+      fromPublicEye: location.state?.fromPublicEye
     };
-
-    console.log('Navigating back with state:', navigationState);
-    navigate('/incident-details', { state: navigationState, replace: true });
+    if (location.state?.fromPublicEye) {
+      navigate('/public-eye', { state: navigationState, replace: true });
+    } else {
+      navigate('/incident-details', { state: navigationState, replace: true });
+    }
   };
 
   const handleConfirm = () => {
@@ -114,11 +117,14 @@ const LocationPicker = () => {
         },
         previousFormData: location.state?.previousFormData || {},
         incidentType: location.state?.incidentType,
-        fromReportIncident: true
+        fromReportIncident: location.state?.fromReportIncident,
+        fromPublicEye: location.state?.fromPublicEye
       };
-
-      console.log('Confirming with state:', navigationState);
-      navigate('/incident-details', { state: navigationState, replace: true });
+      if (location.state?.fromPublicEye) {
+        navigate('/public-eye', { state: navigationState, replace: true });
+      } else {
+        navigate('/incident-details', { state: navigationState, replace: true });
+      }
     }
   };
 
@@ -204,4 +210,4 @@ const LocationPicker = () => {
   );
 };
 
-export default LocationPicker; 
+export default LocationPicker;

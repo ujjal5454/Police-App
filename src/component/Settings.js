@@ -32,14 +32,21 @@ const Settings = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      navigate('/login');
+      navigate('/login'); // Redirect to login page after logout
     } catch (error) {
       console.error('Error logging out:', error);
     }
   };
 
+  // SocialLink component for Stay Connected card
+  const SocialLink = ({ href, children, ...props }) => (
+    <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
+      {children}
+    </a>
+  );
+
   return (
-    <div className="home-container">
+    <div className="settings home-container">
       <div className="home-card">
         <h1 className="settings-title">Settings</h1>
 
@@ -220,18 +227,18 @@ const Settings = () => {
           </div>
           <div className="card-content">
             <div className="social-buttons">
-              <button className="social-button social-facebook">
+              <SocialLink href="https://www.facebook.com/NepalPolicePHQ" className="social-button social-facebook">
                 <FaFacebookF color="white" size={20} />
-              </button>
-              <button className="social-button social-instagram">
+              </SocialLink>
+              <SocialLink href="https://www.instagram.com/nepalpolice/" className="social-button social-instagram">
                 <FaInstagram color="white" size={20} />
-              </button>
-              <button className="social-button social-twitter">
+              </SocialLink>
+              <SocialLink href="https://twitter.com//NepalPoliceHQ" className="social-button social-twitter">
                 <FaTwitter color="white" size={20} />
-              </button>
-              <button className="social-button social-youtube">
+              </SocialLink>
+              <SocialLink href="https://youtube.com/NepalPoliceHQ" className="social-button social-youtube">
                 <FaYoutube color="white" size={20} />
-              </button>
+              </SocialLink>
             </div>
           </div>
         </div>
@@ -243,7 +250,7 @@ const Settings = () => {
             <span>Home</span>
           </button>
           <div className="fab-container">
-            <div className="fab-center" onClick={() => navigate('/public-eye')}>
+            <div className="settings-fab-center" onClick={() => navigate('/public-eye')}>
               <img src={publicEyeIcon} alt="Public Eye" />
             </div>
             <div className="settings-fab-label">Public Eye</div>
