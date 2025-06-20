@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { incidentService } from '../services/api';
+import axios from 'axios';
 import './MyIncidents.css';
 
 // Import incident icons
@@ -29,6 +31,7 @@ const NEPALI_MONTHS = [
 const MyIncidents = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useAuth();
   const [incidents, setIncidents] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
@@ -40,6 +43,7 @@ const MyIncidents = () => {
   const [dateRange, setDateRange] = useState(() => {
     return location.state?.dateRange || null;
   });
+  const [updatingStatus, setUpdatingStatus] = useState(null);
 
   useEffect(() => {
     fetchIncidents();
@@ -99,12 +103,57 @@ const MyIncidents = () => {
   };
 
   const handleIncidentClick = (incident) => {
-    navigate(`/incident-details/${incident._id}`, { 
-      state: { 
+    navigate(`/incident-details/${incident._id}`, {
+      state: {
         incident,
         fromMyIncidents: true
-      } 
+      }
     });
+  };
+
+  const handleStatusUpdate = async (incidentId, newStatus, event) => {
+    event.stopPropagation(); // Prevent incident click
+
+    if (updatingStatus === incidentId) return;
+
+    try {
+      setUpdatingStatus(incidentId);
+      setError(''); // Clear any previous errors
+
+      console.log('Updating status for incident:', incidentId, 'to:', newStatus);
+
+      const response = await axios.patch(
+        `http://localhost:5000/api/incidents/${incidentId}/status`,
+        { status: newStatus },
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          timeout: 10000 // 10 second timeout
+        }
+      );
+
+      console.log('Status update response:', response.data);
+
+      // Update the incident in the local state
+      setIncidents(prev => prev.map(incident =>
+        incident._id === incidentId
+          ? { ...incident, status: newStatus }
+          : incident
+      ));
+
+      console.log('Status updated successfully');
+    } catch (err) {
+      console.error('Error updating status:', err);
+      console.error('Error response:', err.response?.data);
+      setError(`Failed to update incident status: ${err.response?.data?.message || err.message}`);
+
+      // Clear error after 5 seconds
+      setTimeout(() => setError(''), 5000);
+    } finally {
+      setUpdatingStatus(null);
+    }
   };
 
   const getIncidentIcon = (type) => {
@@ -183,11 +232,15 @@ const MyIncidents = () => {
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
       case 'acknowledged':
-        return 'green';
+        return '#4caf50'; // Green
       case 'rejected':
-        return 'red';
+        return '#f44336'; // Red
       case 'pending':
-        return 'orange';
+        return '#ff9800'; // Yellow/Orange
+      case 'in_progress':
+        return '#2196f3'; // Blue
+      case 'resolved':
+        return '#4caf50'; // Green
       default:
         return 'gray';
     }
@@ -241,7 +294,7 @@ const MyIncidents = () => {
               <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="white"/>
             </svg>
           </button>
-          <h1>My Incidents</h1>
+          <h1>{user && user.role === 'admin' ? 'All Incidents' : 'My Incidents'}</h1>
           <button className="header-filter-btn" onClick={() => setFilterOpen(!filterOpen)}>
             <svg width="24" height="24" viewBox="0 0 24 24">
               <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z" fill="white"/>
@@ -322,6 +375,37 @@ const MyIncidents = () => {
               </div>
               <div className="incidents-item-details">
                 <h3>{incident.type || 'Unknown Type'}</h3>
+
+                {/* Show user details for admin */}
+                {user && user.role === 'admin' && incident.reportedBy && (
+                  <div className="user-details-section">
+                    <div className="user-details-row">
+                      <span className="user-detail-label">👤 Name:</span>
+                      <span className="user-detail-value">{incident.reportedBy.name}</span>
+                    </div>
+                    <div className="user-details-row">
+                      <span className="user-detail-label">📞 Phone:</span>
+                      <span className="user-detail-value">{incident.reportedBy.phone || 'N/A'}</span>
+                    </div>
+                    <div className="user-details-row">
+                      <span className="user-detail-label">📍 Location:</span>
+                      <span className="user-detail-value">
+                        {[
+                          incident.reportedBy.municipality,
+                          incident.reportedBy.district,
+                          incident.reportedBy.province
+                        ].filter(Boolean).join(', ') || 'N/A'}
+                      </span>
+                    </div>
+                    {incident.reportedBy.address && (
+                      <div className="user-details-row">
+                        <span className="user-detail-label">🏠 Address:</span>
+                        <span className="user-detail-value">{incident.reportedBy.address}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 <div className="incidents-item-info">
                   <div className="incidents-item-info-left">
                     <p className="incidents-item-id">
@@ -339,6 +423,39 @@ const MyIncidents = () => {
                       </p>
                     </div>
                   </div>
+                  {user && user.role === 'admin' && (
+                    <div className="admin-status-controls" onClick={(e) => e.stopPropagation()}>
+                      <div className="admin-status-buttons">
+                        <button
+                          className={`status-btn acknowledge-btn ${incident.status === 'acknowledged' ? 'active' : ''}`}
+                          onClick={(e) => handleStatusUpdate(incident._id, 'acknowledged', e)}
+                          disabled={updatingStatus === incident._id}
+                          title="Mark as Acknowledged"
+                        >
+                          Acknowledge
+                        </button>
+                        <button
+                          className={`status-btn pending-btn ${incident.status === 'pending' ? 'active' : ''}`}
+                          onClick={(e) => handleStatusUpdate(incident._id, 'pending', e)}
+                          disabled={updatingStatus === incident._id}
+                          title="Mark as Pending"
+                        >
+                          Pending
+                        </button>
+                        <button
+                          className={`status-btn reject-btn ${incident.status === 'rejected' ? 'active' : ''}`}
+                          onClick={(e) => handleStatusUpdate(incident._id, 'rejected', e)}
+                          disabled={updatingStatus === incident._id}
+                          title="Mark as Rejected"
+                        >
+                          Reject
+                        </button>
+                      </div>
+                      {updatingStatus === incident._id && (
+                        <div className="updating-indicator">Updating...</div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

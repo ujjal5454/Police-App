@@ -63,30 +63,62 @@ const IncidentDetails = () => {
   });
 
   const [previews, setPreviews] = useState(() => ({
-    images: formData.media.images.map(f => f.url) || [],
-    video: formData.media.video.map(f => f.url) || []
+    images: formData.media.images.map(f => {
+      // Handle both local blob URLs and server URLs
+      return f.url?.startsWith('blob:') ? f.url : (f.url ? `http://localhost:5000${f.url}` : '');
+    }).filter(Boolean) || [],
+    video: formData.media.video.map(f => {
+      // Handle both local blob URLs and server URLs
+      return f.url?.startsWith('blob:') ? f.url : (f.url ? `http://localhost:5000${f.url}` : '');
+    }).filter(Boolean) || []
   }));
 
   const fetchIncidentDetails = useCallback(async () => {
     try {
       setLoading(true);
+      setError('');
+      console.log('Fetching incident details for ID:', id);
+
       const response = await incidentService.getIncidentById(id);
+      console.log('Incident details response:', response);
+
+      // Handle both response.data and direct response formats
+      const incident = response.data || response;
+      console.log('Processed incident data:', incident);
+      console.log('Incident media:', incident.media);
+
       setFormData({
-        type: response.data.type || '',
-        description: response.data.description || '',
-        location: response.data.location || {
+        type: incident.type || '',
+        description: incident.description || '',
+        location: incident.location || {
           coordinates: null,
           address: ''
         },
         media: {
-          images: response.data.media?.images || [],
-          audio: response.data.media?.audio || [],
-          video: response.data.media?.video || []
+          images: incident.media?.images || [],
+          audio: incident.media?.audio || [],
+          video: incident.media?.video || []
         },
-        status: response.data.status
+        status: incident.status || 'pending'
       });
+
+      // Update previews for media files - handle both local URLs and server URLs
+      if (incident.media) {
+        setPreviews({
+          images: incident.media.images?.map(img => {
+            // If URL starts with blob: it's a local file, otherwise it's from server
+            return img.url?.startsWith('blob:') ? img.url : `http://localhost:5000${img.url}`;
+          }) || [],
+          video: incident.media.video?.map(vid => {
+            // If URL starts with blob: it's a local file, otherwise it's from server
+            return vid.url?.startsWith('blob:') ? vid.url : `http://localhost:5000${vid.url}`;
+          }) || []
+        });
+      }
+
     } catch (err) {
-      setError('Failed to fetch incident details');
+      console.error('Error fetching incident details:', err);
+      setError(`Failed to fetch incident details: ${err.message || err}`);
     } finally {
       setLoading(false);
     }
@@ -222,19 +254,6 @@ const IncidentDetails = () => {
     }
 
     try {
-      // Get current user for reportedBy field
-      let currentUser = JSON.parse(localStorage.getItem('user'));
-      if (!currentUser) {
-        // For testing purposes, create a temporary user
-        // In production, this should redirect to login
-        console.warn('No user logged in, creating temporary user for testing');
-        currentUser = {
-          _id: '507f1f77bcf86cd799439011', // Temporary MongoDB ObjectId for testing
-          name: 'Test User',
-          email: 'test@example.com'
-        };
-      }
-
       console.log('Submitting incident with data:', {
         type: formData.type,
         description: formData.description,
@@ -247,6 +266,7 @@ const IncidentDetails = () => {
       });
 
       // Prepare incident data in the format expected by the backend
+      // Note: reportedBy will be set automatically by the backend using the authenticated user
       const incidentData = {
         type: formData.type,
         description: formData.description,
@@ -271,8 +291,7 @@ const IncidentDetails = () => {
             filename: file.filename,
             size: file.size
           }))
-        },
-        reportedBy: currentUser._id || currentUser.id
+        }
       };
 
       console.log('Sending incident data:', incidentData);
@@ -333,20 +352,98 @@ const IncidentDetails = () => {
   const renderFilePreview = (type, file, index, total) => {
     const isImage = type === 'images';
     const isVideo = type === 'video';
+    const isAudio = type === 'audio';
     const currentIndex = currentFileIndices[type];
-    const previewUrl = type === 'images' ? previews.images[currentIndex] :
-                      type === 'video' ? previews.video[currentIndex] : null;
 
+    // Get preview URL for images and videos
+    let previewUrl = null;
+    if (type === 'images' && previews.images[currentIndex]) {
+      previewUrl = previews.images[currentIndex];
+    } else if (type === 'video' && previews.video[currentIndex]) {
+      previewUrl = previews.video[currentIndex];
+    } else if (file.url) {
+      // Fallback to file URL if preview not available
+      previewUrl = file.url.startsWith('blob:') ? file.url : `http://localhost:5000${file.url}`;
+    }
+
+    // Get audio URL
+    let audioUrl = null;
+    if (isAudio && file.url) {
+      audioUrl = file.url.startsWith('blob:') ? file.url : `http://localhost:5000${file.url}`;
+    }
+
+    // Only show the current file based on the currentIndex for this type
     if (index !== currentIndex) return null;
 
     return (
-      <div className="file-preview-container" key={index}>
+      <div className="file-preview-container" key={`${type}-${index}`}>
         <div className="file-preview">
+          {isImage && previewUrl && (
+            <img
+              src={previewUrl}
+              alt={`Preview ${currentIndex + 1}`}
+              onError={(e) => {
+                console.log('Image failed to load:', previewUrl);
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'flex';
+              }}
+            />
+          )}
           {isImage && (
-            <img src={previewUrl} alt={`Preview ${currentIndex + 1}`} />
+            <div className="file-placeholder" style={{ display: 'none' }}>
+              <div className="placeholder-content">
+                <span>📷</span>
+                <span>Image: {file.filename}</span>
+                {file.size && <span>{(file.size / (1024 * 1024)).toFixed(2)} MB</span>}
+              </div>
+            </div>
+          )}
+
+          {isVideo && previewUrl && (
+            <video
+              src={previewUrl}
+              controls
+              onError={(e) => {
+                console.log('Video failed to load:', previewUrl);
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'flex';
+              }}
+            />
           )}
           {isVideo && (
-            <video src={previewUrl} controls />
+            <div className="file-placeholder" style={{ display: 'none' }}>
+              <div className="placeholder-content">
+                <span>🎥</span>
+                <span>Video: {file.filename}</span>
+                {file.size && <span>{(file.size / (1024 * 1024)).toFixed(2)} MB</span>}
+              </div>
+            </div>
+          )}
+
+          {isAudio && (
+            <div className="audio-preview">
+              {audioUrl ? (
+                <audio
+                  src={audioUrl}
+                  controls
+                  onError={(e) => {
+                    console.log('Audio failed to load:', audioUrl);
+                    e.target.style.display = 'none';
+                  }}
+                />
+              ) : (
+                <div className="audio-placeholder">
+                  <span>🎵</span>
+                  <span>Audio file not available</span>
+                </div>
+              )}
+              <div className="audio-info">
+                <span className="audio-filename">{file.filename}</span>
+                {file.size && (
+                  <span className="audio-size">{(file.size / (1024 * 1024)).toFixed(2)} MB</span>
+                )}
+              </div>
+            </div>
           )}
         </div>
 
@@ -374,17 +471,64 @@ const IncidentDetails = () => {
             </div>
           )}
 
-          <button
-            type="button"
-            className="delete-button"
-            onClick={() => handleDeleteFile(type, currentIndex)}
-          >
-            ×
-          </button>
+          {/* Only show delete button if not in view mode (i.e., user is creating/editing, not admin viewing) */}
+          {!viewMode && (
+            <button
+              type="button"
+              className="delete-button"
+              onClick={() => handleDeleteFile(type, currentIndex)}
+            >
+              ×
+            </button>
+          )}
         </div>
       </div>
     );
   };
+
+  if (loading && viewMode) {
+    return (
+      <div className="incident-details-container">
+        <div className="incident-details-card">
+          <div className="incident-header">
+            <button className="back-button" onClick={handleBack}>
+              <svg width="24" height="24" viewBox="0 0 24 24">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="white"/>
+              </svg>
+            </button>
+            <h2>Loading...</h2>
+          </div>
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+            <p>Loading incident details...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error && viewMode) {
+    return (
+      <div className="incident-details-container">
+        <div className="incident-details-card">
+          <div className="incident-header">
+            <button className="back-button" onClick={handleBack}>
+              <svg width="24" height="24" viewBox="0 0 24 24">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="white"/>
+              </svg>
+            </button>
+            <h2>Error</h2>
+          </div>
+          <div className="error-container">
+            <p>{error}</p>
+            <button onClick={fetchIncidentDetails} className="retry-button">
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="incident-details-container">
@@ -473,6 +617,12 @@ const IncidentDetails = () => {
           <div className="preview-section">
             {formData.media.images.map((file, index) => (
               renderFilePreview('images', file, index, formData.media.images.length))
+            )}
+          </div>
+
+          <div className="preview-section">
+            {formData.media.audio.map((file, index) => (
+              renderFilePreview('audio', file, index, formData.media.audio.length))
             )}
           </div>
 

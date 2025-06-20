@@ -45,7 +45,7 @@ const incidentSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'in_progress', 'resolved'],
+    enum: ['pending', 'acknowledged', 'rejected', 'in_progress', 'resolved'],
     default: 'pending'
   },
   reportedBy: {

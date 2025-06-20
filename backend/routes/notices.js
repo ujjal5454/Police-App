@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const News = require('../models/News');
+const Notice = require('../models/Notice');
 const auth = require('../middleware/auth');
 const multer = require('multer');
 const path = require('path');
@@ -8,11 +8,11 @@ const path = require('path');
 // Configure multer for image uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/news/');
+    cb(null, 'uploads/notices/');
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, 'news-' + uniqueSuffix + path.extname(file.originalname));
+    cb(null, 'notice-' + uniqueSuffix + path.extname(file.originalname));
   }
 });
 
@@ -50,10 +50,10 @@ const requireAdmin = async (req, res, next) => {
   }
 };
 
-// GET /api/news - Get all published news (public)
+// GET /api/notices - Get all published notices (public)
 router.get('/', async (req, res) => {
   try {
-    const { category, province, search, page = 1, limit = 10 } = req.query;
+    const { category, province, search, page = 1, limit = 10, startDate, endDate } = req.query;
     
     let query = { status: 'published' };
     
@@ -75,19 +75,27 @@ router.get('/', async (req, res) => {
       ];
     }
     
+    // Add date range filter
+    if (startDate && endDate) {
+      query.createdAt = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate)
+      };
+    }
+    
     const skip = (page - 1) * limit;
     
-    const news = await News.find(query)
+    const notices = await Notice.find(query)
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(parseInt(limit))
       .populate('createdBy', 'name')
       .exec();
     
-    const total = await News.countDocuments(query);
+    const total = await Notice.countDocuments(query);
     
     res.json({
-      news,
+      notices,
       pagination: {
         current: parseInt(page),
         pages: Math.ceil(total / limit),
@@ -95,14 +103,14 @@ router.get('/', async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching news', error: error.message });
+    res.status(500).json({ message: 'Error fetching notices', error: error.message });
   }
 });
 
-// GET /api/news/categories - Get all categories with news count
+// GET /api/notices/categories - Get all categories with notice count
 router.get('/categories', async (req, res) => {
   try {
-    const categories = await News.aggregate([
+    const categories = await Notice.aggregate([
       { $match: { status: 'published' } },
       { $group: { _id: '$category', count: { $sum: 1 } } },
       { $sort: { count: -1 } }
@@ -114,43 +122,43 @@ router.get('/categories', async (req, res) => {
   }
 });
 
-// GET /api/news/recent - Get recent news
+// GET /api/notices/recent - Get recent notices
 router.get('/recent', async (req, res) => {
   try {
     const { limit = 5 } = req.query;
-    const news = await News.getRecent(parseInt(limit));
-    res.json(news);
+    const notices = await Notice.getRecent(parseInt(limit));
+    res.json(notices);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching recent news', error: error.message });
+    res.status(500).json({ message: 'Error fetching recent notices', error: error.message });
   }
 });
 
-// GET /api/news/:id - Get single news article
+// GET /api/notices/:id - Get single notice
 router.get('/:id', async (req, res) => {
   try {
-    const news = await News.findById(req.params.id)
+    const notice = await Notice.findById(req.params.id)
       .populate('createdBy', 'name')
       .populate('updatedBy', 'name');
     
-    if (!news) {
-      return res.status(404).json({ message: 'News article not found' });
+    if (!notice) {
+      return res.status(404).json({ message: 'Notice not found' });
     }
     
     // Increment views
-    await news.incrementViews();
+    await notice.incrementViews();
     
-    res.json(news);
+    res.json(notice);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching news article', error: error.message });
+    res.status(500).json({ message: 'Error fetching notice', error: error.message });
   }
 });
 
-// POST /api/news - Create new news (Admin only)
+// POST /api/notices - Create new notice (Admin only)
 router.post('/', auth, requireAdmin, upload.single('image'), async (req, res) => {
   try {
     const { title, content, category, province, status, priority } = req.body;
     
-    const newsData = {
+    const noticeData = {
       title,
       content,
       category,
@@ -162,26 +170,26 @@ router.post('/', auth, requireAdmin, upload.single('image'), async (req, res) =>
     
     // Add image if uploaded
     if (req.file) {
-      newsData.image = {
-        url: `/uploads/news/${req.file.filename}`,
+      noticeData.image = {
+        url: `/uploads/notices/${req.file.filename}`,
         filename: req.file.filename,
         size: req.file.size
       };
     }
     
-    const news = new News(newsData);
-    await news.save();
+    const notice = new Notice(noticeData);
+    await notice.save();
     
-    // Populate the created news
-    await news.populate('createdBy', 'name');
+    // Populate the created notice
+    await notice.populate('createdBy', 'name');
     
-    res.status(201).json(news);
+    res.status(201).json(notice);
   } catch (error) {
-    res.status(400).json({ message: 'Error creating news', error: error.message });
+    res.status(400).json({ message: 'Error creating notice', error: error.message });
   }
 });
 
-// PUT /api/news/:id - Update news (Admin only)
+// PUT /api/notices/:id - Update notice (Admin only)
 router.put('/:id', auth, requireAdmin, upload.single('image'), async (req, res) => {
   try {
     const { title, content, category, province, status, priority } = req.body;
@@ -199,80 +207,80 @@ router.put('/:id', auth, requireAdmin, upload.single('image'), async (req, res) 
     // Add image if uploaded
     if (req.file) {
       updateData.image = {
-        url: `/uploads/news/${req.file.filename}`,
+        url: `/uploads/notices/${req.file.filename}`,
         filename: req.file.filename,
         size: req.file.size
       };
     }
     
-    const news = await News.findByIdAndUpdate(
+    const notice = await Notice.findByIdAndUpdate(
       req.params.id,
       updateData,
       { new: true, runValidators: true }
     ).populate('createdBy', 'name').populate('updatedBy', 'name');
     
-    if (!news) {
-      return res.status(404).json({ message: 'News article not found' });
+    if (!notice) {
+      return res.status(404).json({ message: 'Notice not found' });
     }
     
-    res.json(news);
+    res.json(notice);
   } catch (error) {
-    res.status(400).json({ message: 'Error updating news', error: error.message });
+    res.status(400).json({ message: 'Error updating notice', error: error.message });
   }
 });
 
-// DELETE /api/news/:id - Delete news (Admin only)
+// DELETE /api/notices/:id - Delete notice (Admin only)
 router.delete('/:id', auth, requireAdmin, async (req, res) => {
   try {
-    const news = await News.findByIdAndDelete(req.params.id);
+    const notice = await Notice.findByIdAndDelete(req.params.id);
     
-    if (!news) {
-      return res.status(404).json({ message: 'News article not found' });
+    if (!notice) {
+      return res.status(404).json({ message: 'Notice not found' });
     }
     
-    res.json({ message: 'News article deleted successfully' });
+    res.json({ message: 'Notice deleted successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting news', error: error.message });
+    res.status(500).json({ message: 'Error deleting notice', error: error.message });
   }
 });
 
-// POST /api/news/:id/like - Like a news article
+// POST /api/notices/:id/like - Like a notice
 router.post('/:id/like', async (req, res) => {
   try {
-    const news = await News.findById(req.params.id);
+    const notice = await Notice.findById(req.params.id);
 
-    if (!news) {
-      return res.status(404).json({ message: 'News article not found' });
+    if (!notice) {
+      return res.status(404).json({ message: 'Notice not found' });
     }
 
-    await news.incrementLikes();
+    await notice.incrementLikes();
 
-    res.json({ likes: news.likes });
+    res.json({ likes: notice.likes });
   } catch (error) {
-    res.status(500).json({ message: 'Error liking news', error: error.message });
+    res.status(500).json({ message: 'Error liking notice', error: error.message });
   }
 });
 
-// POST /api/news/:id/unlike - Unlike a news article
+// POST /api/notices/:id/unlike - Unlike a notice
 router.post('/:id/unlike', async (req, res) => {
   try {
-    const news = await News.findById(req.params.id);
+    const notice = await Notice.findById(req.params.id);
 
-    if (!news) {
-      return res.status(404).json({ message: 'News not found' });
+    if (!notice) {
+      return res.status(404).json({ message: 'Notice not found' });
     }
 
     // Decrement likes but don't go below 0
-    news.likes = Math.max(0, news.likes - 1);
-    await news.save();
+    notice.likes = Math.max(0, notice.likes - 1);
+    await notice.save();
 
-    res.json({ likes: news.likes });
+    res.json({ likes: notice.likes });
   } catch (error) {
-    res.status(500).json({ message: 'Error unliking news', error: error.message });
+    res.status(500).json({ message: 'Error unliking notice', error: error.message });
   }
 });
 
-// GET /api/news/admin/all - Get all news for admin (including drafts)
+// GET /api/notices/admin/all - Get all notices for admin (including drafts)
 router.get('/admin/all', auth, requireAdmin, async (req, res) => {
   try {
     const { page = 1, limit = 10, status, category } = req.query;
@@ -289,7 +297,7 @@ router.get('/admin/all', auth, requireAdmin, async (req, res) => {
     
     const skip = (page - 1) * limit;
     
-    const news = await News.find(query)
+    const notices = await Notice.find(query)
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(parseInt(limit))
@@ -297,10 +305,10 @@ router.get('/admin/all', auth, requireAdmin, async (req, res) => {
       .populate('updatedBy', 'name')
       .exec();
     
-    const total = await News.countDocuments(query);
+    const total = await Notice.countDocuments(query);
     
     res.json({
-      news,
+      notices,
       pagination: {
         current: parseInt(page),
         pages: Math.ceil(total / limit),
@@ -308,7 +316,7 @@ router.get('/admin/all', auth, requireAdmin, async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching admin news', error: error.message });
+    res.status(500).json({ message: 'Error fetching admin notices', error: error.message });
   }
 });
 

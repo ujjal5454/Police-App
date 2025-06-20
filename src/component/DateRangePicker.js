@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './DateRangePicker.css';
 
 const NEPALI_MONTHS = [
@@ -12,6 +12,7 @@ const DAYS_OF_WEEK = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 const DateRangePicker = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [selectedDates, setSelectedDates] = useState({
     startDate: null,
     endDate: null
@@ -126,16 +127,22 @@ const DateRangePicker = () => {
 
   const handleSave = () => {
     if (selectedDates.startDate && selectedDates.endDate) {
-      navigate('/my-incidents', {
+      const fromNotice = location.state?.fromNotice;
+      const targetPath = fromNotice ? '/notice' : '/my-incidents';
+
+      navigate(targetPath, {
         state: {
-          dateRange: selectedDates
+          dateRange: selectedDates,
+          ...(fromNotice && { currentFilters: location.state.currentFilters })
         }
       });
     }
   };
 
   const handleClose = () => {
-    navigate('/my-incidents');
+    const fromNotice = location.state?.fromNotice;
+    const targetPath = fromNotice ? '/notice' : '/my-incidents';
+    navigate(targetPath);
   };
 
   const formatDateRange = () => {

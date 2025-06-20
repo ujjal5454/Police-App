@@ -20,6 +20,9 @@ import Police from './component/Police';
 import News from './component/News';
 import NewsDetail from './component/NewsDetail';
 import AdminNews from './component/AdminNews';
+import Notice from './component/Notice';
+import NoticeDetail from './component/NoticeDetail';
+import AdminNotice from './component/AdminNotice';
 import Settings from './component/Settings';
 import PublicEye from './component/PublicEye';
 
@@ -136,6 +139,21 @@ function App() {
           <Route path="/admin/news" element={
             <ProtectedRoute>
               <AdminNews />
+            </ProtectedRoute>
+          } />
+          <Route path="/notice" element={
+            <ProtectedRoute allowSkip={true}>
+              <Notice />
+            </ProtectedRoute>
+          } />
+          <Route path="/notice/:id" element={
+            <ProtectedRoute allowSkip={true}>
+              <NoticeDetail />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/notices" element={
+            <ProtectedRoute>
+              <AdminNotice />
             </ProtectedRoute>
           } />
           <Route path="/settings" element={

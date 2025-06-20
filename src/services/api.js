@@ -91,6 +91,84 @@ export const incidentService = {
   }
 };
 
+// Notice Services
+export const noticeService = {
+  createNotice: async (noticeData) => {
+    try {
+      const response = await api.post('/notices', noticeData);
+      return response.data;
+    } catch (error) {
+      console.error('API Error:', error.response?.data || error.message);
+      throw error.response?.data || error.message;
+    }
+  },
+
+  getAllNotices: async (params = {}) => {
+    try {
+      const queryString = new URLSearchParams(params).toString();
+      const response = await api.get(`/notices?${queryString}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  getNoticeById: async (id) => {
+    try {
+      const response = await api.get(`/notices/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  updateNotice: async (id, updateData) => {
+    try {
+      const response = await api.put(`/notices/${id}`, updateData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  deleteNotice: async (id) => {
+    try {
+      const response = await api.delete(`/notices/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  likeNotice: async (id) => {
+    try {
+      const response = await api.post(`/notices/${id}/like`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  unlikeNotice: async (id) => {
+    try {
+      const response = await api.post(`/notices/${id}/unlike`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  getAdminNotices: async (params = {}) => {
+    try {
+      const queryString = new URLSearchParams(params).toString();
+      const response = await api.get(`/notices/admin/all?${queryString}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  }
+};
+
 // Add auth token to requests if user is logged in
 api.interceptors.request.use(
   (config) => {
@@ -103,4 +181,4 @@ api.interceptors.request.use(
   (error) => {
     return Promise.reject(error);
   }
-); 
+);

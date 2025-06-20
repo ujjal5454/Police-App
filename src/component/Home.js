@@ -38,6 +38,9 @@ const Home = () => {
       case 'News':
         navigate('/news');
         break;
+      case 'Notice':
+        navigate('/notice');
+        break;
       default:
         // Handle other services
         break;

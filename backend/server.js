@@ -29,7 +29,7 @@ app.use(cors({
     }
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
@@ -70,6 +70,7 @@ mongoose.connect(mongoUri)
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/incidents', require('./routes/incidents'));
 app.use('/api/news', require('./routes/news'));
+app.use('/api/notices', require('./routes/notices'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

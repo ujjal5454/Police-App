@@ -456,3 +456,178 @@
     gap: 8px !important;
   }
 }
+
+/* User Details Section for Admin */
+.user-details-section {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.user-details-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  gap: 8px;
+}
+
+.user-details-row:last-child {
+  margin-bottom: 0;
+}
+
+.user-detail-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #495057;
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.user-detail-value {
+  font-size: 12px;
+  color: #212529;
+  flex: 1;
+  word-break: break-word;
+}
+
+/* Admin Status Controls */
+.admin-status-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  margin-left: 16px;
+}
+
+.admin-status-buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.status-btn {
+  padding: 6px 12px;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  min-width: 70px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.status-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+.status-btn.active {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.acknowledge-btn {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border-color: #4caf50;
+}
+
+.acknowledge-btn.active {
+  background-color: #4caf50;
+  color: white;
+}
+
+.acknowledge-btn:hover:not(:disabled) {
+  background-color: #4caf50;
+  color: white;
+}
+
+.pending-btn {
+  background-color: #fff3e0;
+  color: #ef6c00;
+  border-color: #ff9800;
+}
+
+.pending-btn.active {
+  background-color: #ff9800;
+  color: white;
+}
+
+.pending-btn:hover:not(:disabled) {
+  background-color: #ff9800;
+  color: white;
+}
+
+.reject-btn {
+  background-color: #ffebee;
+  color: #c62828;
+  border-color: #f44336;
+}
+
+.reject-btn.active {
+  background-color: #f44336;
+  color: white;
+}
+
+.reject-btn:hover:not(:disabled) {
+  background-color: #f44336;
+  color: white;
+}
+
+.updating-indicator {
+  font-size: 10px;
+  color: #666;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.incidents-item-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .admin-status-controls {
+    margin-left: 8px;
+  }
+
+  .admin-status-buttons {
+    gap: 4px;
+  }
+
+  .status-btn {
+    padding: 4px 8px;
+    font-size: 10px;
+    min-width: 60px;
+  }
+
+  .user-details-section {
+    padding: 8px;
+    margin-bottom: 8px;
+  }
+
+  .user-details-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .user-detail-label {
+    min-width: auto;
+  }
+}
