@@ -127,4 +127,123 @@ router.get('/check-auth', auth, (req, res) => {
   res.json({ isAuthenticated: true });
 });
 
-module.exports = router; 
+// Change password
+router.patch('/change-password', auth, async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const userId = req.user.user.id;
+
+    // Validate input
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ message: 'Old password and new password are required' });
+    }
+
+    // Get user from database
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Verify old password
+    const isMatch = await user.comparePassword(oldPassword);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Current password is incorrect' });
+    }
+
+    // Validate new password
+    if (newPassword.length < 8) {
+      return res.status(400).json({ message: 'New password must be at least 8 characters long' });
+    }
+
+    // Check if new password is different from old password
+    const isSamePassword = await user.comparePassword(newPassword);
+    if (isSamePassword) {
+      return res.status(400).json({ message: 'New password must be different from current password' });
+    }
+
+    // Hash new password and update user
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    await User.findByIdAndUpdate(userId, { password: hashedPassword });
+
+    res.json({ message: 'Password changed successfully' });
+  } catch (err) {
+    console.error('Change password error:', err.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Update profile
+router.patch('/profile', auth, async (req, res) => {
+  try {
+    const userId = req.user.user.id;
+    const { name, phone, email, dateOfBirth, address, profilePhoto } = req.body;
+
+    console.log('Profile update request:', { userId, name, phone, email, dateOfBirth, address, profilePhoto });
+
+    // Validate input
+    if (!name || !phone || !email) {
+      console.log('Validation failed: missing required fields');
+      return res.status(400).json({ message: 'Name, phone, and email are required' });
+    }
+
+    // Check if email is already taken by another user
+    if (email) {
+      const existingUser = await User.findOne({ email, _id: { $ne: userId } });
+      if (existingUser) {
+        console.log('Email already taken by another user');
+        return res.status(400).json({ message: 'Email is already taken by another user' });
+      }
+    }
+
+    // Prepare update data
+    const updateData = {
+      name,
+      phone,
+      email
+    };
+
+    // Add optional fields if provided
+    if (dateOfBirth) {
+      updateData.dateOfBirth = dateOfBirth;
+    }
+
+    if (address) {
+      updateData.address = address;
+    }
+
+    if (profilePhoto) {
+      updateData.profilePhoto = profilePhoto;
+    }
+
+    console.log('Update data:', updateData);
+
+    // Update user profile
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      updateData,
+      { new: true, runValidators: true }
+    ).select('-password');
+
+    if (!updatedUser) {
+      console.log('User not found');
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    console.log('Profile updated successfully');
+    res.json({
+      message: 'Profile updated successfully',
+      user: updatedUser
+    });
+  } catch (err) {
+    console.error('Update profile error:', err);
+    console.error('Error details:', err.message);
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({ message: 'Validation error: ' + err.message });
+    }
+    res.status(500).json({ message: 'Server error: ' + err.message });
+  }
+});
+
+module.exports = router;

@@ -143,16 +143,17 @@ const Home = () => {
             <img src={homeIcon} alt="Home" />
             <span>Home</span>
           </button>
-          <div className="fab-container">
-            <div className="home-fab-center" onClick={() => navigate('/public-eye')}>
-              <img src={publicEyeIcon} alt="Public Eye" />
-            </div>
-            <div className="fab-label">Public Eye</div>
-          </div>
+          <div className="nav-spacer"></div>
           <button className="home-nav-btn" onClick={() => navigate('/settings')}>
             <img src={settingsIcon} alt="Settings" />
             <span>Settings</span>
           </button>
+
+          {/* FAB positioned absolutely relative to navigation */}
+          <div className="home-fab-center" onClick={() => navigate('/public-eye')}>
+            <img src={publicEyeIcon} alt="Public Eye" />
+          </div>
+          <div className="fab-label">Public Eye</div>
         </div>
       </div>
     </div>

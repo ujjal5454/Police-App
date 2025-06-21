@@ -89,10 +89,13 @@
 }
 
 .profile-avatar {
-  width: 7rem;
-  height: 7rem;
+  width: 4rem;
+  height: 4rem;
   border-radius: 0.5rem;
   margin-right: 0.75rem;
+  object-fit: cover;
+  background: #f0f0f0;
+  border: 2px solid #e0e0e0;
 }
 
 .profile-details {

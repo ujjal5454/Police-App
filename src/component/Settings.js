@@ -22,7 +22,7 @@ const defaultSettings = {
 
 const Settings = () => {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
   const [settings, setSettings] = useState(defaultSettings);
 
   const updateSetting = (key, value) => {
@@ -50,70 +50,74 @@ const Settings = () => {
       <div className="home-card">
         <h1 className="settings-title">Settings</h1>
 
-        {/* User Profile Card */}
-        <div className="profile-card">
-          <div className="profile-info">
-            <img 
-              src={logo} 
-              alt="Profile"
-              className="profile-avatar"
-            />
-            <div className="profile-details">
-              <h2 className="profile-name">{user?.name || 'Ujjal Basnet'}</h2>
-              <p className="profile-email">{user?.email || 'ujjalbasnet869@gmail.com'}</p>
+        {/* User Profile Card - Only show for authenticated users */}
+        {isAuthenticated && (
+          <div className="profile-card">
+            <div className="profile-info">
+              <img
+                src={user?.profilePhoto || logo}
+                alt="Profile"
+                className="profile-avatar"
+              />
+              <div className="profile-details">
+                <h2 className="profile-name">{user?.name || 'Ujjal Basnet'}</h2>
+                <p className="profile-email">{user?.email || 'ujjalbasnet869@gmail.com'}</p>
+              </div>
+              <button className="settings-edit-btn" onClick={() => navigate('/edit-profile')}>
+                <FiEdit2 size={20} color="#666" />
+              </button>
             </div>
-            <button className="settings-edit-btn">
-              <FiEdit2 size={20} color="#666" />
-            </button>
           </div>
-        </div>
+        )}
 
-        {/* User Settings Card */}
-        <div className="settings-card">
-          <div className="card-header">
-            <h2 className="card-title">User Settings</h2>
+        {/* User Settings Card - Only show for authenticated users */}
+        {isAuthenticated && (
+          <div className="settings-card">
+            <div className="card-header">
+              <h2 className="card-title">User Settings</h2>
+            </div>
+            <div className="card-content-spacey">
+              {/* Change Password */}
+              <div className="setting-item" onClick={() => navigate('/change-password')}>
+                <FiKey className="setting-icon" size={20} />
+                <span className="setting-label">Change Password</span>
+                <svg className="chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+              {/* Biometric Login */}
+              <div className="setting-item">
+                <RiFingerprint2Line className="setting-icon" size={20} />
+                <span className="setting-label">Biometric Login</span>
+                <label className="toggle-switch">
+                  <input
+                    type="checkbox"
+                    className="toggle-input"
+                    checked={settings.biometric}
+                    onChange={() => updateSetting('biometric', !settings.biometric)}
+                  />
+                  <div className="toggle-background"></div>
+                  <div className="toggle-slider"></div>
+                </label>
+              </div>
+              {/* Notifications */}
+              <div className="setting-item">
+                <MdOutlineNotifications className="setting-icon" size={20} />
+                <span className="setting-label">Notifications</span>
+                <label className="toggle-switch">
+                  <input
+                    type="checkbox"
+                    className="toggle-input"
+                    checked={settings.notifications}
+                    onChange={() => updateSetting('notifications', !settings.notifications)}
+                  />
+                  <div className="toggle-background"></div>
+                  <div className="toggle-slider"></div>
+                </label>
+              </div>
+            </div>
           </div>
-          <div className="card-content-spacey">
-            {/* Change Password */}
-            <div className="setting-item">
-              <FiKey className="setting-icon" size={20} />
-              <span className="setting-label">Change Password</span>
-              <svg className="chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-            {/* Biometric Login */}
-            <div className="setting-item">
-              <RiFingerprint2Line className="setting-icon" size={20} />
-              <span className="setting-label">Biometric Login</span>
-              <label className="toggle-switch">
-                <input 
-                  type="checkbox" 
-                  className="toggle-input" 
-                  checked={settings.biometric} 
-                  onChange={() => updateSetting('biometric', !settings.biometric)} 
-                />
-                <div className="toggle-background"></div>
-                <div className="toggle-slider"></div>
-              </label>
-            </div>
-            {/* Notifications */}
-            <div className="setting-item">
-              <MdOutlineNotifications className="setting-icon" size={20} />
-              <span className="setting-label">Notifications</span>
-              <label className="toggle-switch">
-                <input 
-                  type="checkbox" 
-                  className="toggle-input" 
-                  checked={settings.notifications} 
-                  onChange={() => updateSetting('notifications', !settings.notifications)} 
-                />
-                <div className="toggle-background"></div>
-                <div className="toggle-slider"></div>
-              </label>
-            </div>
-          </div>
-        </div>
+        )}
 
         {/* Panic Mode Card */}
         <div className="settings-card">
@@ -207,18 +211,35 @@ const Settings = () => {
           </div>
         </div>
 
-        {/* Logout Card */}
-        <div className="settings-card">
-          <div className="card-content">
-            <button 
-              onClick={handleLogout}
-              className="logout-button"
-            >
-              <FiLogOut className="logout-icon" size={20} />
-              <span>Log out</span>
-            </button>
+        {/* Logout Card - Only show for authenticated users */}
+        {isAuthenticated && (
+          <div className="settings-card">
+            <div className="card-content">
+              <button
+                onClick={handleLogout}
+                className="logout-button"
+              >
+                <FiLogOut className="logout-icon" size={20} />
+                <span>Log out</span>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* Login Card - Only show for non-authenticated users */}
+        {!isAuthenticated && (
+          <div className="settings-card">
+            <div className="card-content">
+              <button
+                onClick={() => navigate('/login')}
+                className="logout-button"
+              >
+                <FiLogOut className="logout-icon" size={20} />
+                <span>Log in</span>
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Stay Connected Card */}
         <div className="settings-card">

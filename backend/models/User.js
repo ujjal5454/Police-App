@@ -19,7 +19,18 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 6
   },
+  phone: {
+    type: String,
+    trim: true
+  },
   mobileNumber: {
+    type: String,
+    trim: true
+  },
+  dateOfBirth: {
+    type: Date
+  },
+  profilePhoto: {
     type: String,
     trim: true
   },
@@ -33,6 +44,18 @@ const userSchema = new mongoose.Schema({
       trim: true
     },
     municipality: {
+      type: String,
+      trim: true
+    },
+    wardNo: {
+      type: String,
+      trim: true
+    },
+    houseNo: {
+      type: String,
+      trim: true
+    },
+    street: {
       type: String,
       trim: true
     }

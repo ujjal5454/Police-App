@@ -24,19 +24,19 @@ import Notice from './component/Notice';
 import NoticeDetail from './component/NoticeDetail';
 import AdminNotice from './component/AdminNotice';
 import Settings from './component/Settings';
+import ChangePassword from './component/ChangePassword';
+import EditProfile from './component/EditProfile';
 import PublicEye from './component/PublicEye';
 
 const ProtectedRoute = ({ children, allowSkip = false }) => {
   const { isAuthenticated, loading } = useAuth();
-  const location = useLocation();
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  // Allow access if user is authenticated OR if coming from skip and allowSkip is true
-  const isFromSkip = location.state?.fromSkip;
-  if (isAuthenticated || (allowSkip && isFromSkip)) {
+  // Allow access if user is authenticated OR if allowSkip is true
+  if (isAuthenticated || allowSkip) {
     return children;
   }
 
@@ -66,9 +66,15 @@ function App() {
               <IncidentDetails />
             </ProtectedRoute>
           } />
-          <Route path="/settings" element={
+
+          <Route path="/change-password" element={
             <ProtectedRoute>
-              <Settings />
+              <ChangePassword />
+            </ProtectedRoute>
+          } />
+          <Route path="/edit-profile" element={
+            <ProtectedRoute>
+              <EditProfile />
             </ProtectedRoute>
           } />
           <Route path="/incident-details/:id" element={
