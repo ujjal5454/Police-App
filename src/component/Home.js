@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 import './Home.css';
 import logo from '../assets/logo.png';
 import homeIcon from '../assets/icons/home.png';
@@ -22,6 +23,7 @@ import bellIcon from '../assets/icons/bell.png';
 const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { theme } = useTheme();
   const showSignIn = location.state?.fromSkip;
 
   const handleServiceClick = (title) => {
@@ -103,39 +105,41 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="home-card">
-        <div className="home-header">
-          <div className="logo-section">
-            <div className="logo-text-section">
-              <img src={logo} alt="Nepal Police Logo" className="logo" />
-              <div className="header-actions">
-                {showSignIn && (
-                  <button className="sign-in-btn" onClick={() => navigate('/')}>
-                    Sign In
+        <div className="home-content">
+          <div className="home-header">
+            <div className="logo-section">
+              <div className="logo-text-section">
+                <img src={logo} alt="Nepal Police Logo" className="logo" />
+                <div className="header-actions">
+                  {showSignIn && (
+                    <button className="sign-in-btn" onClick={() => navigate('/')}>
+                      Sign In
+                    </button>
+                  )}
+                  <button className="notification-btn">
+                    <img src={bellIcon} alt="Notifications" />
                   </button>
-                )}
-                <button className="notification-btn">
-                  <img src={bellIcon} alt="Notifications" />
-                </button>
+                </div>
+              </div>
+              <div className="header-text">
+                <h1>Jay Nepal</h1>
+                <p>Welcome to Nepal Police App. Please sign in to explore all our services.</p>
               </div>
             </div>
-            <div className="header-text">
-              <h1>Jay Nepal</h1>
-              <p>Welcome to Nepal Police App. Please sign in to explore all our services.</p>
-            </div>
           </div>
-        </div>
-        
-        <div className="services-grid">
-          {services.map(service => (
-            <div 
-              key={service.id} 
-              className="service-item"
-              onClick={() => handleServiceClick(service.title)}
-            >
-              <img src={service.icon} alt={service.title} />
-              <p>{service.title}</p>
-            </div>
-          ))}
+
+          <div className="services-grid">
+            {services.map(service => (
+              <div
+                key={service.id}
+                className="service-item"
+                onClick={() => handleServiceClick(service.title)}
+              >
+                <img src={service.icon} alt={service.title} />
+                <p>{service.title}</p>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="custom-bottom-nav">

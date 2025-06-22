@@ -4,6 +4,7 @@ import "./Login.css"; // Import the CSS file for styling
 import userIcon from "../assets/icons/user.png";
 import hideIcon from "../assets/icons/hide.png";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 
 const Login = () => {
   const navigate = useNavigate();

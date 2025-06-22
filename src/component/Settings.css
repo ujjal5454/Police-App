@@ -1,27 +1,33 @@
 /* Settings component styles using Home structure */
 .home-container {
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: var(--theme-background);
   padding: 16px;
   display: flex;
   flex-direction: column;
   padding-bottom: 20px;
 }
 
-.home-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  max-width: 600px;
-  margin: 0 auto;
-  width: 100%;
-  position: relative;
-  padding: 20px;
-  padding-bottom: 90px; /* Increased padding for bottom nav */
-  min-height: 100vh; /* Increased height to fill most of the viewport */
+.settings .home-card {
+  background: var(--theme-cardBackground) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px var(--theme-shadow), 0 1px 2px var(--theme-shadow) !important;
+  overflow: visible !important;
+  display: flex !important;
+  flex-direction: column !important;
+  max-width: 600px !important;
+  margin: 0 auto !important;
+  width: 100% !important;
+  position: relative !important;
+  padding: 20px !important;
+  min-height: calc(100vh - 32px) !important;
+  flex: 1 !important;
+}
+
+.settings .settings-content {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .settings-title {
@@ -29,7 +35,7 @@
   font-weight: 600;
   margin-bottom: 0.5rem;
   text-align: start;
-  color: #333;
+  color: var(--theme-textPrimary);
 }
 
 .settings-edit-btn {
@@ -75,11 +81,11 @@
 
 /* Profile card styles */
 .profile-card {
-  background: white;
+  background: var(--theme-cardBackground);
   border-radius: 0.75rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px 0 var(--theme-shadow);
   padding: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .profile-info {
@@ -105,35 +111,35 @@
 .profile-name {
   font-size: 1.125rem;
   font-weight: bold;
-  color: #111827;
+  color: var(--theme-textPrimary);
 }
 
 .profile-email {
-  color: #6b7280;
+  color: var(--theme-textSecondary);
   font-size: 0.875rem;
 }
 
 /* Card styles */
 .settings-card {
-  background: white;
+  background: var(--theme-cardBackground);
   border-radius: 0.75rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  margin-bottom: -0.5rem;
+  box-shadow: 0 1px 3px 0 var(--theme-shadow);
+  margin-bottom: 1rem;
 }
 
 .settings-card:last-of-type {
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
 .card-header {
   padding: 1rem;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--theme-borderLight);
 }
 
 .card-title {
   font-size: 1.125rem;
   font-weight: 500;
-  color: #111827;
+  color: var(--theme-textPrimary);
 }
 
 .card-content {
@@ -156,7 +162,7 @@
 }
 
 .setting-icon {
-  color: #6b7280;
+  color: var(--theme-textSecondary);
   margin-right: 0.75rem;
   width: 1.25rem;
   height: 1.25rem;
@@ -164,12 +170,12 @@
 
 .setting-label {
   flex: 1;
-  color: #111827;
+  color: var(--theme-textPrimary);
   margin-bottom: 0.5rem;
 }
 
 .setting-value {
-  color: #6b7280;
+  color: var(--theme-textSecondary);
   margin-right: 0.5rem;
   font-size: 0.875rem;
 }
@@ -177,53 +183,77 @@
 .chevron-icon {
   width: 1.25rem;
   height: 1.25rem;
-  color: #9ca3af;
+  color: var(--theme-textLight);
 }
 
 /* Toggle switch styles */
 .toggle-switch {
   position: relative;
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
   cursor: pointer;
+  margin-left: auto;
 }
 
 .toggle-input {
-  position: absolute;
   opacity: 0;
-  pointer-events: none;
+  width: 0;
+  height: 0;
+  position: absolute;
 }
 
 .toggle-background {
-  width: 2.75rem;
-  height: 1.5rem;
-  background-color: #e5e7eb;
-  border-radius: 9999px;
-  transition: background-color 0.3s;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc !important;
+  border-radius: 24px;
+  transition: all 0.3s ease;
+  border: 1px solid #ddd;
 }
 
 .toggle-input:checked + .toggle-background {
-  background-color: #2563eb;
+  background-color: #2196f3 !important;
+  border-color: #2196f3;
 }
 
 .toggle-slider {
   position: absolute;
-  left: 2px;
+  height: 18px;
+  width: 18px;
+  left: 3px;
   top: 2px;
-  width: 1.25rem;
-  height: 1.25rem;
   background-color: white;
   border-radius: 50%;
-  transition: transform 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-.toggle-input:checked ~ .toggle-slider {
-  transform: translateX(1.25rem);
+.toggle-input:checked + .toggle-background .toggle-slider {
+  transform: translateX(20px);
+}
+
+/* Dark mode specific toggle styling */
+body.dark-theme .toggle-background {
+  background-color: #555;
+  border-color: #666;
+}
+
+body.dark-theme .toggle-input:checked + .toggle-background {
+  background-color: var(--theme-buttonPrimary);
+  border-color: var(--theme-buttonPrimary);
+}
+
+body.dark-theme .toggle-slider {
+  background-color: #fff;
 }
 
 /* Panic mode note styles */
 .panic-note {
-  background-color: #f9fafb;
+  background-color: var(--theme-inputBackground);
   padding: 0.75rem;
   border-radius: 0.5rem;
   margin-top: 0.75rem;
@@ -231,7 +261,7 @@
 
 .panic-note-text {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--theme-textSecondary);
   line-height: 1.4;
 }
 
@@ -295,22 +325,24 @@
   margin-right: 0.75rem;
 }
 
-/* Bottom navigation styles - inside card */
-.custom-bottom-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #003366;
-  width: 100%;
-  border-radius: 0 0 12px 12px;
-  z-index: 10;
-  box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 70px;
-  padding: 0;
+/* Bottom navigation styles - match Home page */
+.settings .home-card .custom-bottom-nav {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 32px !important;
+  align-items: center !important;
+  background: var(--theme-navBackground) !important;
+  width: 100% !important;
+  border-radius: 0 0 12px 12px !important;
+  z-index: 10 !important;
+  box-shadow: 0 -2px 8px var(--theme-shadow) !important;
+  position: relative !important;
+  height: 70px !important;
+  padding: 0 24px !important;
+  overflow: visible !important;
+  margin-top: auto !important;
+  flex-shrink: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 .nav-btn, .home-nav-btn {
@@ -328,14 +360,8 @@
   justify-content: center;
 }
 
-.nav-btn:first-child {
-  align-items: flex-mid;
-  padding-left: 0.5em;
-}
-
-.home-nav-btn:last-child {
-  align-items: flex-mid;
-  padding-right: 0.5em;
+.nav-spacer {
+  /* Empty spacer for middle grid column */
 }
 
 .custom-bottom-nav .nav-btn:hover,
@@ -361,7 +387,8 @@
 .nav-btn img, .home-nav-btn img {
   width: 28px;
   height: 28px;
-  filter: brightness(0) invert(1);
+  filter: var(--theme-navIconFilter);
+  transition: filter 0.3s ease;
 }
 
 .nav-btn span, .home-nav-btn span {
@@ -393,7 +420,7 @@
 }
 
 .settings-fab-center {
-  background: #1976d2;
+  background: var(--theme-fabBackground);
   border-radius: 50%;
   width: 70px;
   height: 70px;
@@ -402,10 +429,10 @@
   align-items: center;
   justify-content: center;
   position: absolute;
+  top: -35px;
   left: 50%;
-  transform: translateX(-50%) translateY(80%);
-  bottom: 20px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  transform: translateX(-50%);
+  box-shadow: 0 4px 16px var(--theme-shadowDark);
   z-index: 20;
   cursor: pointer;
 }
@@ -414,25 +441,14 @@
   width: 36px;
   height: 36px;
   filter: brightness(0) invert(1);
-}
-
-.fab-container {
-  position: absolute;
-  left: 54%;
-  bottom: 70px;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 30;
-  width: 0;
+  transition: filter 0.3s ease;
 }
 
 .settings-fab-label {
- position: absolute;
+  position: absolute;
+  top: 45px;
   left: 50%;
   transform: translateX(-50%);
-  top: calc(100% + 44px);
   color: white;
   font-size: 15px;
   font-weight: 500;
@@ -442,11 +458,21 @@
 }
 
 /* Responsive adjustments */
+@media (max-width: 768px) {
+  .custom-bottom-nav {
+    padding: 0 16px;
+  }
+}
+
 @media (max-width: 480px) {
   .home-card {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     max-width: calc(100% - 1rem);
+  }
+
+  .custom-bottom-nav {
+    padding: 0 12px;
   }
 }
 

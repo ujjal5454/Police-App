@@ -1,0 +1,233 @@
+/* User Guide Container */
+.user-guide-container {
+  min-height: 100vh;
+  background-color: var(--theme-background);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-guide-card {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: var(--theme-cardBackground);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px var(--theme-shadow), 0 1px 2px var(--theme-shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 600px;
+}
+
+/* Header */
+.user-guide-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background-color: var(--theme-headerBackground);
+  color: white;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  min-height: 56px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.back-button {
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.back-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.user-guide-title {
+  font-size: 18px;
+  margin: 0;
+  font-weight: 500;
+  text-align: center;
+  flex: 1;
+  color: white;
+}
+
+/* Content */
+.user-guide-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Search */
+.search-container {
+  position: relative;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  width: 100%;
+  background-color: var(--theme-inputBackground);
+  border: 1px solid var(--theme-inputBorder);
+  border-radius: 0.75rem;
+  padding: 1rem 3rem 1rem 1rem;
+  font-size: 1rem;
+  color: var(--theme-textPrimary);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--theme-buttonPrimary);
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+.search-input::placeholder {
+  color: var(--theme-textLight);
+}
+
+.search-icon {
+  position: absolute;
+  right: 1rem;
+  color: var(--theme-textLight);
+  font-size: 1.25rem;
+  pointer-events: none;
+}
+
+/* Guide Items */
+.guide-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.guide-item {
+  background-color: var(--theme-cardBackground);
+  border: 1px solid var(--theme-border);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  transition: all 0.2s;
+}
+
+.guide-item:hover {
+  box-shadow: 0 4px 12px var(--theme-shadow);
+  transform: translateY(-1px);
+}
+
+.guide-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.guide-item-title {
+  color: var(--theme-textPrimary);
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.guide-item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.docs-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--theme-inputBackground);
+  color: var(--theme-textSecondary);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.view-details-btn {
+  background: none;
+  border: none;
+  color: var(--theme-buttonPrimary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s;
+}
+
+.view-details-btn:hover {
+  background-color: rgba(25, 118, 210, 0.1);
+  transform: translateX(2px);
+}
+
+/* No Results */
+.no-results {
+  text-align: center;
+  padding: 2rem;
+  color: var(--theme-textSecondary);
+}
+
+.no-results p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .user-guide-container {
+    padding: 8px;
+  }
+
+  .user-guide-card {
+    min-height: calc(100vh - 16px);
+  }
+
+  .user-guide-content {
+    padding: 16px;
+  }
+
+  .user-guide-header {
+    padding: 8px 12px;
+  }
+
+  .user-guide-title {
+    font-size: 16px;
+  }
+
+  .guide-item {
+    padding: 1rem;
+  }
+
+  .guide-item-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .view-details-btn {
+    align-self: flex-end;
+  }
+}

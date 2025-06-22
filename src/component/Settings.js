@@ -8,22 +8,28 @@ import { FiEdit2, FiKey, FiLogOut } from 'react-icons/fi';
 import { IoLanguage, IoColorPalette } from 'react-icons/io5';
 import { MdOutlineNotifications } from 'react-icons/md';
 import { RiFingerprint2Line } from 'react-icons/ri';
-import { FaComment, FaShieldAlt, FaBookOpen, FaQuestionCircle, FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
+import { FaComment, FaShieldAlt, FaBookOpen, FaQuestionCircle, FaFacebookF, FaInstagram, FaTwitter, FaYoutube, FaExclamationTriangle } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import './Settings.css';
 
 const defaultSettings = {
   theme: 'Light',
   language: 'English',
   biometric: false,
-  notifications: true,
+  notifications: false,
   panicMode: false
 };
 
 const Settings = () => {
   const navigate = useNavigate();
   const { user, logout, isAuthenticated } = useAuth();
+  const { isDarkMode, toggleTheme } = useTheme();
   const [settings, setSettings] = useState(defaultSettings);
+
+  const handleThemeToggle = () => {
+    toggleTheme();
+  };
 
   const updateSetting = (key, value) => {
     setSettings(prev => ({ ...prev, [key]: value }));
@@ -48,7 +54,8 @@ const Settings = () => {
   return (
     <div className="settings home-container">
       <div className="home-card">
-        <h1 className="settings-title">Settings</h1>
+        <div className="settings-content">
+          <h1 className="settings-title">Settings</h1>
 
         {/* User Profile Card - Only show for authenticated users */}
         {isAuthenticated && (
@@ -96,8 +103,9 @@ const Settings = () => {
                     checked={settings.biometric}
                     onChange={() => updateSetting('biometric', !settings.biometric)}
                   />
-                  <div className="toggle-background"></div>
-                  <div className="toggle-slider"></div>
+                  <span className="toggle-background">
+                    <span className="toggle-slider"></span>
+                  </span>
                 </label>
               </div>
               {/* Notifications */}
@@ -111,37 +119,38 @@ const Settings = () => {
                     checked={settings.notifications}
                     onChange={() => updateSetting('notifications', !settings.notifications)}
                   />
-                  <div className="toggle-background"></div>
-                  <div className="toggle-slider"></div>
+                  <span className="toggle-background">
+                    <span className="toggle-slider"></span>
+                  </span>
                 </label>
+              </div>
+              {/* Panic Mode */}
+              <div className="setting-item">
+                <FaExclamationTriangle className="setting-icon" size={20} />
+                <span className="setting-label">Panic Mode</span>
+                <label className="toggle-switch">
+                  <input
+                    type="checkbox"
+                    className="toggle-input"
+                    checked={settings.panicMode}
+                    onChange={() => updateSetting('panicMode', !settings.panicMode)}
+                  />
+                  <span className="toggle-background">
+                    <span className="toggle-slider"></span>
+                  </span>
+                </label>
+              </div>
+              {/* Panic Mode Note */}
+              <div className="panic-note">
+                <p className="panic-note-text">
+                  Note: Please turn off or disable battery saver mode while panic mode is enabled. Also please do not swipe off and close app from memory for better user experience.
+                </p>
               </div>
             </div>
           </div>
         )}
 
-        {/* Panic Mode Card */}
-        <div className="settings-card">
-          <div className="card-content">
-            <div className="setting-item" style={{ marginBottom: '0.75rem' }}>
-              <span className="card-title">Panic Mode</span>
-              <label className="toggle-switch">
-                <input 
-                  type="checkbox" 
-                  className="toggle-input" 
-                  checked={settings.panicMode} 
-                  onChange={() => updateSetting('panicMode', !settings.panicMode)} 
-                />
-                <div className="toggle-background"></div>
-                <div className="toggle-slider"></div>
-              </label>
-            </div>
-            <div className="panic-note">
-              <p className="panic-note-text">
-                Note: Please turn off or disable battery saver mode while panic mode is enabled. Also please do not swipe off and close app from memory for better user experience.
-              </p>
-            </div>
-          </div>
-        </div>
+
 
         {/* App Settings Card */}
         <div className="settings-card">
@@ -158,14 +167,21 @@ const Settings = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </div>
-            {/* Theme */}
+            {/* Dark Mode */}
             <div className="setting-item">
               <IoColorPalette className="setting-icon" size={20} />
-              <span className="setting-label">Theme</span>
-              <span className="setting-value">{settings.theme}</span>
-              <svg className="chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
+              <span className="setting-label">Dark Mode</span>
+              <label className="toggle-switch">
+                <input
+                  type="checkbox"
+                  className="toggle-input"
+                  checked={isDarkMode}
+                  onChange={handleThemeToggle}
+                />
+                <span className="toggle-background">
+                  <span className="toggle-slider"></span>
+                </span>
+              </label>
             </div>
           </div>
         </div>
@@ -177,7 +193,7 @@ const Settings = () => {
           </div>
           <div className="card-content-spacey">
             {/* Feedback */}
-            <div className="setting-item">
+            <div className="setting-item" onClick={() => navigate('/feedback')}>
               <FaComment className="setting-icon" size={20} />
               <span className="setting-label">Feedback</span>
               <svg className="chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -193,7 +209,7 @@ const Settings = () => {
               </svg>
             </div>
             {/* User Guide */}
-            <div className="setting-item">
+            <div className="setting-item" onClick={() => navigate('/user-guide')}>
               <FaBookOpen className="setting-icon" size={20} />
               <span className="setting-label">User Guide</span>
               <svg className="chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -201,7 +217,7 @@ const Settings = () => {
               </svg>
             </div>
             {/* FAQ */}
-            <div className="setting-item">
+            <div className="setting-item" onClick={() => navigate('/faq')}>
               <FaQuestionCircle className="setting-icon" size={20} />
               <span className="setting-label">Frequently Asked Questions</span>
               <svg className="chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -263,23 +279,25 @@ const Settings = () => {
             </div>
           </div>
         </div>
+        </div>
 
-        {/* Bottom Navigation - Inside card */}
+        {/* Bottom Navigation - Match Home page structure */}
         <div className="custom-bottom-nav">
           <button className="nav-btn" onClick={() => navigate('/home')}>
             <img src={homeIcon} alt="Home" />
             <span>Home</span>
           </button>
-          <div className="fab-container">
-            <div className="settings-fab-center" onClick={() => navigate('/public-eye')}>
-              <img src={publicEyeIcon} alt="Public Eye" />
-            </div>
-            <div className="settings-fab-label">Public Eye</div>
-          </div>
+          <div className="nav-spacer"></div>
           <button className="home-nav-btn active">
             <img src={settingsIcon} alt="Settings" />
             <span>Settings</span>
           </button>
+
+          {/* FAB positioned absolutely relative to navigation */}
+          <div className="settings-fab-center" onClick={() => navigate('/public-eye')}>
+            <img src={publicEyeIcon} alt="Public Eye" />
+          </div>
+          <div className="settings-fab-label">Public Eye</div>
         </div>
       </div>
     </div>

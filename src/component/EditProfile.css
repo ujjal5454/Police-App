@@ -1,6 +1,6 @@
 .edit-profile-container {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: var(--theme-background);
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -10,9 +10,9 @@
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  background: white;
+  background: var(--theme-cardBackground);
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px var(--theme-shadow), 0 1px 2px var(--theme-shadow);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -26,7 +26,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: #0088cc;
+  background: var(--theme-headerBackground);
   color: white;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
@@ -99,8 +99,8 @@
   width: 100px;
   height: 100px;
   border-radius: 20px;
-  background: #f0f0f0;
-  border: 2px solid #e0e0e0;
+  background: var(--theme-inputBackground);
+  border: 2px solid var(--theme-border);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -119,12 +119,12 @@
   right: -5px;
   width: 32px;
   height: 32px;
-  background: #0088cc;
+  background: var(--theme-buttonPrimary);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid white;
+  border: 3px solid var(--theme-cardBackground);
 }
 
 /* Sections */
@@ -137,7 +137,7 @@
 .section-title {
   font-size: 18px;
   font-weight: 600;
-  color: #333;
+  color: var(--theme-textPrimary);
   margin: 0;
 }
 
@@ -162,9 +162,9 @@
   padding: 16px;
   border: none;
   border-radius: 12px;
-  background: #f0f0f0;
+  background: var(--theme-inputBackground);
   font-size: 16px;
-  color: #333;
+  color: var(--theme-textPrimary);
   outline: none;
   transition: all 0.2s ease;
   box-sizing: border-box;
@@ -173,12 +173,12 @@
 
 .form-input:focus,
 .form-select:focus {
-  background: #e8e8e8;
-  box-shadow: 0 0 0 2px rgba(0, 136, 204, 0.2);
+  background: var(--theme-inputBackground);
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
 }
 
 .form-input::placeholder {
-  color: #999;
+  color: var(--theme-textLight);
 }
 
 .form-select {
@@ -224,7 +224,7 @@
 .update-button {
   width: 100%;
   padding: 16px;
-  background: #0088cc;
+  background: var(--theme-buttonPrimary);
   color: white;
   border: none;
   border-radius: 12px;
@@ -236,13 +236,13 @@
 }
 
 .update-button:hover:not(:disabled) {
-  background: #0077b3;
+  background: #1565c0;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3);
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
 }
 
 .update-button:disabled {
-  background: #ccc;
+  background: var(--theme-textLight);
   cursor: not-allowed;
   transform: none;
   box-shadow: none;

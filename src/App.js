@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import Login from "./component/Login";
 import Signup from "./component/Signup";
 import ForgotPassword from "./component/ForgotPassword";
@@ -27,6 +28,9 @@ import Settings from './component/Settings';
 import ChangePassword from './component/ChangePassword';
 import EditProfile from './component/EditProfile';
 import PublicEye from './component/PublicEye';
+import Feedback from './component/Feedback';
+import UserGuide from './component/UserGuide';
+import FAQ from './component/FAQ';
 
 const ProtectedRoute = ({ children, allowSkip = false }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -45,8 +49,9 @@ const ProtectedRoute = ({ children, allowSkip = false }) => {
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
@@ -173,9 +178,25 @@ function App() {
               <PublicEye />
             </ProtectedRoute>
           } />
+          <Route path="/feedback" element={
+            <ProtectedRoute allowSkip={true}>
+              <Feedback />
+            </ProtectedRoute>
+          } />
+          <Route path="/user-guide" element={
+            <ProtectedRoute allowSkip={true}>
+              <UserGuide />
+            </ProtectedRoute>
+          } />
+          <Route path="/faq" element={
+            <ProtectedRoute allowSkip={true}>
+              <FAQ />
+            </ProtectedRoute>
+          } />
         </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

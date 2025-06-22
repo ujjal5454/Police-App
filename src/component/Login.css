@@ -1,6 +1,6 @@
 .login-container {
   min-height: 100vh;
-  background: white;
+  background: var(--theme-background);
   padding: 20px;
   display: flex;
   flex-direction: column;
