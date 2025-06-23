@@ -31,6 +31,8 @@ import PublicEye from './component/PublicEye';
 import Feedback from './component/Feedback';
 import UserGuide from './component/UserGuide';
 import FAQ from './component/FAQ';
+import FM from './component/FM';
+import EComplaint from './component/EComplaint';
 
 const ProtectedRoute = ({ children, allowSkip = false }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -191,6 +193,16 @@ function App() {
           <Route path="/faq" element={
             <ProtectedRoute allowSkip={true}>
               <FAQ />
+            </ProtectedRoute>
+          } />
+          <Route path="/fm" element={
+            <ProtectedRoute allowSkip={true}>
+              <FM />
+            </ProtectedRoute>
+          } />
+          <Route path="/e-complaint" element={
+            <ProtectedRoute allowSkip={true}>
+              <EComplaint />
             </ProtectedRoute>
           } />
         </Routes>

@@ -43,6 +43,12 @@ const Home = () => {
       case 'Notice':
         navigate('/notice');
         break;
+      case 'FM':
+        navigate('/fm');
+        break;
+      case 'e-Complaint':
+        navigate('/e-complaint');
+        break;
       default:
         // Handle other services
         break;

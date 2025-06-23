@@ -1,6 +1,6 @@
 .incident-details-container {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: var(--theme-background);
   padding: 15px;
   display: flex;
   align-items: center;
@@ -20,9 +20,9 @@
 }
 
 .incident-details-card {
-  background: white;
+  background: var(--theme-cardBackground);
   border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 30px var(--theme-shadowDark);
   width: 100%;
   max-width: 500px;
   overflow: hidden;
@@ -95,8 +95,8 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background-color: #0088cc;
-  color: white;
+  background-color: var(--theme-headerBackground);
+  color: var(--theme-textWhite);
   border-radius: 8px 8px 0 0;
   position: relative;
 }
@@ -108,36 +108,37 @@
   flex: 1;
   text-align: center;
   font-weight: bold;
+  color: var(--theme-textWhite);
 }
 
-.back-button {
-  background: none;
-  border: none;
-  padding: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background-color 0.2s;
-  color: white;
+.incident-header .back-button {
+  background: none !important;
+  border: none !important;
+  padding: 8px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  transition: background-color 0.2s !important;
+  color: var(--theme-textWhite) !important;
 }
 
-.back-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.incident-header .back-button:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-.back-button svg {
-  width: 24px;
-  height: 24px;
-  fill: currentColor;
+.incident-header .back-button svg {
+  width: 24px !important;
+  height: 24px !important;
+  fill: currentColor !important;
 }
 
 .icon {
   width: 24px;
   height: 24px;
   margin-right: 8px;
-  color: black;
+  color: var(--theme-textPrimary);
 }
 
 .incident-form {
@@ -151,36 +152,39 @@
   width: 100%;
   min-height: 120px;
   padding: 12px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--theme-inputBorder);
   border-radius: 8px;
   font-size: 15px;
   resize: vertical;
   font-family: inherit;
+  background: var(--theme-inputBackground);
+  color: var(--theme-textPrimary);
 }
 
 .description-input:focus {
   outline: none;
-  border-color: #1a73e8;
+  border-color: var(--theme-buttonPrimary);
   box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+  background: var(--theme-inputFocus);
 }
 
 .location-selector {
   display: flex;
   align-items: center;
   padding: 12px;
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
+  background-color: var(--theme-inputBackground);
+  border: 1px solid var(--theme-inputBorder);
   border-radius: 8px;
   cursor: pointer;
   width: 100%;
   margin: 1rem 0;
   transition: background-color 0.2s;
-  color: black;
+  color: var(--theme-textPrimary);
   font-size: 15px;
 }
 
 .location-selector:hover {
-  background-color: #e8e8e8;
+  background-color: var(--theme-inputFocus);
 }
 
 .upload-sections {
@@ -190,9 +194,10 @@
 }
 
 .upload-section {
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--theme-inputBorder);
   border-radius: 8px;
   overflow: hidden;
+  background: var(--theme-inputBackground);
 }
 
 .upload-section label {
@@ -202,12 +207,12 @@
   padding: 12px;
   cursor: pointer;
   font-size: 15px;
-  color: #333;
+  color: var(--theme-textPrimary);
 }
 
 .upload-section:hover {
-  border-color: #1a73e8;
-  background: #f8f9fa;
+  border-color: var(--theme-buttonPrimary);
+  background: var(--theme-inputFocus);
 }
 
 .upload-section input[type="file"] {
@@ -231,7 +236,8 @@
   position: relative;
   border-radius: 8px;
   overflow: hidden;
-  background: #f8f9fa;
+  background: var(--theme-inputBackground);
+  border: 1px solid var(--theme-border);
 }
 
 .file-preview {
@@ -323,8 +329,8 @@
 }
 
 .submit-button {
-  background: #1a73e8;
-  color: white;
+  background: var(--theme-buttonPrimary);
+  color: var(--theme-textWhite);
   border: none;
   padding: 12px;
   border-radius: 8px;
@@ -332,23 +338,25 @@
   font-weight: 500;
   cursor: pointer;
   margin-top: 8px;
+  transition: background-color 0.2s;
 }
 
 .submit-button:hover {
-  background: #1557b0;
+  background: var(--theme-buttonHover);
 }
 
 .submit-button:disabled {
-  background: #ccc;
+  background: var(--theme-textLight);
   cursor: not-allowed;
 }
 
 .error-message {
-  color: #d32f2f;
+  color: var(--theme-error);
   font-size: 14px;
   margin-top: 8px;
   padding: 8px;
-  background: #ffebee;
+  background: var(--theme-inputBackground);
+  border: 1px solid var(--theme-error);
   border-radius: 4px;
 }
 
@@ -356,32 +364,32 @@
   display: flex;
   align-items: center;
   padding: 12px;
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
+  background-color: var(--theme-inputBackground);
+  border: 1px solid var(--theme-inputBorder);
   border-radius: 8px;
   width: 100%;
   margin: 1rem 0;
-  color: black;
+  color: var(--theme-textPrimary);
   font-size: 15px;
 }
 
 .status-display {
   padding: 12px;
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
+  background-color: var(--theme-inputBackground);
+  border: 1px solid var(--theme-inputBorder);
   border-radius: 8px;
   margin: 1rem 0;
-  color: black;
+  color: var(--theme-textPrimary);
   font-size: 15px;
 }
 
 .status-display strong {
-  color: #666;
+  color: var(--theme-textSecondary);
   margin-right: 8px;
 }
 
 .description-input[readonly] {
-  background-color: #f5f5f5;
+  background-color: var(--theme-inputBackground);
   cursor: default;
 }
 
@@ -393,13 +401,14 @@
   justify-content: center;
   padding: 40px 20px;
   text-align: center;
+  color: var(--theme-textPrimary);
 }
 
 .loading-spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #1976D2;
+  border: 4px solid var(--theme-border);
+  border-top: 4px solid var(--theme-buttonPrimary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 16px;
@@ -413,8 +422,8 @@
 .retry-button {
   margin-top: 16px;
   padding: 8px 16px;
-  background: #1976D2;
-  color: white;
+  background: var(--theme-buttonPrimary);
+  color: var(--theme-textWhite);
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -423,7 +432,7 @@
 }
 
 .retry-button:hover {
-  background: #1565C0;
+  background: var(--theme-buttonHover);
 }
 
 .audio-preview {
@@ -432,7 +441,7 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: #f8f9fa;
+  background: var(--theme-inputBackground);
   border-radius: 8px;
   width: 100%;
   height: 100%;
@@ -455,13 +464,13 @@
 .audio-filename {
   font-size: 14px;
   font-weight: 500;
-  color: #333;
+  color: var(--theme-textPrimary);
   word-break: break-word;
 }
 
 .audio-size {
   font-size: 12px;
-  color: #666;
+  color: var(--theme-textSecondary);
 }
 
 .file-placeholder {
@@ -470,8 +479,8 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  background: #f8f9fa;
-  border: 2px dashed #dee2e6;
+  background: var(--theme-inputBackground);
+  border: 2px dashed var(--theme-border);
   border-radius: 8px;
   min-height: 200px;
 }
@@ -482,7 +491,7 @@
   align-items: center;
   gap: 8px;
   text-align: center;
-  color: #6c757d;
+  color: var(--theme-textSecondary);
 }
 
 .placeholder-content span:first-child {
@@ -496,7 +505,7 @@
 
 .placeholder-content span:last-child {
   font-size: 12px;
-  color: #adb5bd;
+  color: var(--theme-textLight);
 }
 
 .audio-placeholder {
@@ -504,10 +513,10 @@
   align-items: center;
   gap: 8px;
   padding: 12px;
-  background: #f8f9fa;
-  border: 1px solid #dee2e6;
+  background: var(--theme-inputBackground);
+  border: 1px solid var(--theme-border);
   border-radius: 6px;
-  color: #6c757d;
+  color: var(--theme-textSecondary);
   margin-bottom: 8px;
 }
 

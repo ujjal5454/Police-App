@@ -91,9 +91,7 @@ button {
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #0056b3;
-}
+
 
 .footer {
     margin-top: 10px;
@@ -269,7 +267,7 @@ button:hover {
 }
 
 .modal-content {
-  background: white;
+  background: var(--theme-cardBackground);
   width: 100%;
   max-width: 400px;
   max-height: 80vh;
@@ -279,6 +277,7 @@ button:hover {
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   animation: slideUp 0.3s ease-out;
+  box-shadow: 0 -4px 20px var(--theme-shadowDark);
 }
 
 @keyframes slideUp {
@@ -292,50 +291,99 @@ button:hover {
 
 .modal-header {
   padding: 16px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--theme-border);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: var(--theme-cardBackground);
 }
 
 .modal-header h2 {
   margin: 0;
   font-size: 18px;
-  color: #333;
+  color: var(--theme-textPrimary);
+  font-weight: 600;
 }
 
 .close-button {
-  background: none;
-  border: none;
-  font-size: 20px;
-  color: #666;
+  background: var(--theme-inputBackground);
+  border: 1px solid var(--theme-border);
+  font-size: 18px;
+  color: var(--theme-textSecondary);
   cursor: pointer;
   padding: 0;
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  font-weight: bold;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.close-button:hover {
+  background: var(--theme-error);
+  color: var(--theme-textWhite);
+  border-color: var(--theme-error);
+}
+
+.close-button:active {
+  background: #c62828;
+  transform: translateY(1px);
+}
+
+/* Enhanced close button visibility - Fixed vibrating issue */
+.close-button::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background 0.3s ease;
+  z-index: -1;
+}
+
+.close-button:hover::before {
+  background: rgba(244, 67, 54, 0.1);
+}
+
+/* Removed pulse animation to fix vibrating issue */
+.close-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.3);
 }
 
 .modal-body {
   padding: 8px 0;
+  background: var(--theme-cardBackground);
 }
 
 .modal-item {
   padding: 12px 16px;
   font-size: 14px;
-  color: #333;
+  color: var(--theme-textPrimary);
   cursor: pointer;
   transition: background-color 0.2s;
+  border-bottom: 1px solid var(--theme-borderLight);
+}
+
+.modal-item:last-child {
+  border-bottom: none;
 }
 
 .modal-item:hover {
-  background-color: #f5f5f5;
+  background-color: var(--theme-inputBackground);
 }
 
 .modal-item:active {
-  background-color: #e8f0fe;
+  background-color: var(--theme-buttonPrimary);
+  color: var(--theme-textWhite);
 }
 
 .next-button {

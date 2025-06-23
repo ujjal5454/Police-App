@@ -20,6 +20,7 @@
   width: 100% !important;
   position: relative !important;
   padding: 20px !important;
+  padding-bottom: 110px !important;
   min-height: calc(100vh - 32px) !important;
   flex: 1 !important;
 }
@@ -326,38 +327,47 @@ body.dark-theme .toggle-slider {
 }
 
 /* Bottom navigation styles - match Home page */
-.settings .home-card .custom-bottom-nav {
+.settings .custom-bottom-nav {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0px !important;
+  right: 0px !important;
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
   gap: 32px !important;
   align-items: center !important;
   background: var(--theme-navBackground) !important;
-  width: 100% !important;
   border-radius: 0 0 12px 12px !important;
   z-index: 10 !important;
   box-shadow: 0 -2px 8px var(--theme-shadow) !important;
-  position: relative !important;
   height: 70px !important;
   padding: 0 24px !important;
   overflow: visible !important;
-  margin-top: auto !important;
-  flex-shrink: 0 !important;
-  margin-bottom: 0 !important;
+  margin: 0 !important;
 }
 
-.nav-btn, .home-nav-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  flex: 1;
-  min-width: 0;
-  padding: 0;
-  z-index: 11;
-  justify-content: center;
+.settings .custom-bottom-nav .nav-btn,
+.settings .custom-bottom-nav .home-nav-btn {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  background: none !important;
+  border: none !important;
+  color: white !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  z-index: 11 !important;
+  justify-content: center !important;
+  width: 100% !important;
+  max-width: none !important;
+  flex: none !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  position: relative !important;
+  height: auto !important;
+  min-width: 0 !important;
 }
 
 .nav-spacer {
@@ -384,21 +394,29 @@ body.dark-theme .toggle-slider {
   box-shadow: none !important;
 }
 
-.nav-btn img, .home-nav-btn img {
-  width: 28px;
-  height: 28px;
-  filter: var(--theme-navIconFilter);
-  transition: filter 0.3s ease;
+.settings .custom-bottom-nav .nav-btn img,
+.settings .custom-bottom-nav .home-nav-btn img {
+  width: 28px !important;
+  height: 28px !important;
+  filter: var(--theme-navIconFilter) !important;
+  transition: filter 0.3s ease !important;
+  opacity: 1 !important;
 }
 
-.nav-btn span, .home-nav-btn span {
-  font-size: 13px;
-  color: white;
-  margin-top: 2px;
+.settings .custom-bottom-nav .nav-btn span,
+.settings .custom-bottom-nav .home-nav-btn span {
+  font-size: 13px !important;
+  color: white !important;
+  margin-top: 2px !important;
+  position: relative !important;
+  bottom: auto !important;
+  left: auto !important;
+  transform: none !important;
+  white-space: nowrap !important;
 }
 
-.home-nav-btn.active span {
-  color: #ffeb3b;
+.settings .custom-bottom-nav .home-nav-btn.active span {
+  color: #ffeb3b !important;
 }
 
 .settings .fab-center {

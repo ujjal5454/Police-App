@@ -166,17 +166,18 @@ const PublicEye = () => {
   };
 
   return (
-    <div className="public-eye-container">
-      <div className="public-eye-card">
-        <div className="public-eye-header">
-          <button className="back-btn" onClick={handleBack}>
+    <div className="incident-details-container">
+      <div className="incident-details-card">
+        <div className="incident-header">
+          <button className="back-button" onClick={handleBack}>
             <svg width="24" height="24" viewBox="0 0 24 24">
-              <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="currentColor"/>
+              <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="white"/>
             </svg>
           </button>
-          <h2 className="public-eye-title">Public Eye Report</h2>
+          <h2>Public Eye Report</h2>
         </div>
-        <form className="public-eye-form" onSubmit={handleSubmit}>
+
+        <form className="incident-form" onSubmit={handleSubmit}>
           <textarea
             className="description-input"
             placeholder="Enter Description"
@@ -185,55 +186,61 @@ const PublicEye = () => {
             required
             readOnly={viewMode}
           />
-          <button
-            type="button"
-            className="location-selector"
-            onClick={handleLocationSelect}
-            disabled={viewMode}
-          >
-            <img src={locationIcon} alt="Location" className="icon" />
-            {formData.location.address || 'Choose Location'}
-          </button>
-          <div className="upload-sections">
-            <div className="upload-section">
-              <label>
-                <img src={imageIcon} alt="Upload Images" className="upload-icon" />
-                Images (Max 3 files, 10MB each)
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={(e) => handleFileUpload('images', e.target.files)}
-                  disabled={viewMode}
-                />
-              </label>
+
+          {viewMode ? (
+            <div className="location-display">
+              <img src={locationIcon} alt="Location" className="icon" />
+              {formData.location.address || 'No location specified'}
             </div>
-            <div className="upload-section">
-              <label>
-                <img src={audioIcon} alt="Upload Audio" className="upload-icon" />
-                Audio (Max 5 files, 10MB each)
-                <input
-                  type="file"
-                  accept="audio/*"
-                  multiple
-                  onChange={(e) => handleFileUpload('audio', e.target.files)}
-                  disabled={viewMode}
-                />
-              </label>
+          ) : (
+            <button
+              type="button"
+              className="location-selector"
+              onClick={handleLocationSelect}
+            >
+              <img src={locationIcon} alt="Location" className="icon" />
+              {formData.location.address || 'Choose Location'}
+            </button>
+          )}
+          {!viewMode && (
+            <div className="upload-sections">
+              <div className="upload-section">
+                <label>
+                  <img src={imageIcon} alt="Upload Images" className="upload-icon" />
+                  Images (Max 3 files, 10MB each)
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={(e) => handleFileUpload('images', e.target.files)}
+                  />
+                </label>
+              </div>
+              <div className="upload-section">
+                <label>
+                  <img src={audioIcon} alt="Upload Audio" className="upload-icon" />
+                  Audio (Max 5 files, 10MB each)
+                  <input
+                    type="file"
+                    accept="audio/*"
+                    multiple
+                    onChange={(e) => handleFileUpload('audio', e.target.files)}
+                  />
+                </label>
+              </div>
+              <div className="upload-section">
+                <label>
+                  <img src={videoIcon} alt="Upload Video" className="upload-icon" />
+                  Video (Max 1 file, 50MB)
+                  <input
+                    type="file"
+                    accept="video/*"
+                    onChange={(e) => handleFileUpload('video', e.target.files)}
+                  />
+                </label>
+              </div>
             </div>
-            <div className="upload-section">
-              <label>
-                <img src={videoIcon} alt="Upload Video" className="upload-icon" />
-                Video (Max 1 file, 50MB)
-                <input
-                  type="file"
-                  accept="video/*"
-                  onChange={(e) => handleFileUpload('video', e.target.files)}
-                  disabled={viewMode}
-                />
-              </label>
-            </div>
-          </div>
+          )}
           <div className="preview-section">
             {renderFilePreview('images')}
             {renderFilePreview('video')}

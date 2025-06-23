@@ -1,0 +1,509 @@
+/* e-Complaint Component - Exact copy of IncidentDetails */
+.ecomplaint-container {
+  min-height: 100vh;
+  background: var(--theme-background);
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ecomplaint-container * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.ecomplaint-container img {
+  overflow-clip-margin: content-box;
+  overflow: clip;
+}
+
+.ecomplaint-card {
+  background: var(--theme-cardBackground);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px var(--theme-shadowDark);
+  width: 100%;
+  max-width: 500px;
+  overflow: hidden;
+}
+
+.ecomplaint-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--theme-headerBackground);
+  color: var(--theme-textWhite);
+  border-radius: 8px 8px 0 0;
+  position: relative;
+}
+
+.ecomplaint-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+  color: var(--theme-textWhite);
+}
+
+.ecomplaint-header .back-button {
+  background: none !important;
+  border: none !important;
+  padding: 8px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  transition: background-color 0.2s !important;
+  color: var(--theme-textWhite) !important;
+}
+
+.ecomplaint-header .back-button:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.ecomplaint-header .back-button svg {
+  width: 24px !important;
+  height: 24px !important;
+  fill: currentColor !important;
+}
+
+.info-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+  color: var(--theme-textWhite);
+}
+
+.info-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.ecomplaint-form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.description-input {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px;
+  border: 1px solid var(--theme-inputBorder);
+  border-radius: 8px;
+  font-size: 15px;
+  resize: vertical;
+  font-family: inherit;
+  background: var(--theme-inputBackground);
+  color: var(--theme-textPrimary);
+}
+
+.description-input:focus {
+  outline: none;
+  border-color: var(--theme-buttonPrimary);
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+  background: var(--theme-inputFocus);
+}
+
+.location-selector {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background-color: var(--theme-inputBackground);
+  border: 1px solid var(--theme-inputBorder);
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  margin: 1rem 0;
+  transition: background-color 0.2s;
+  color: var(--theme-textPrimary);
+  font-size: 15px;
+}
+
+.location-selector:hover {
+  background-color: var(--theme-inputFocus);
+}
+
+/* Complaint Type Selector - Full width like the card */
+.complaint-type-section {
+  margin: 1rem 0;
+}
+
+.complaint-type-selector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background-color: var(--theme-inputBackground);
+  border: 1px solid var(--theme-inputBorder);
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s;
+  color: var(--theme-textPrimary);
+  font-size: 15px;
+}
+
+.complaint-type-selector:hover {
+  background-color: var(--theme-inputFocus);
+}
+
+.select-text {
+  color: var(--theme-textPrimary);
+  font-size: 15px;
+}
+
+.required {
+  color: var(--theme-error);
+  margin-left: 4px;
+}
+
+/* Upload sections - exact copy from IncidentDetails */
+.upload-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.upload-section {
+  border: 1px solid var(--theme-inputBorder);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--theme-inputBackground);
+}
+
+.upload-section label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--theme-textPrimary);
+}
+
+.upload-section:hover {
+  border-color: var(--theme-buttonPrimary);
+  background: var(--theme-inputFocus);
+}
+
+.upload-section input[type="file"] {
+  display: none;
+}
+
+.upload-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Preview sections - exact copy from IncidentDetails */
+.preview-section {
+  display: grid;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.preview-section h3 {
+  margin: 16px 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--theme-textPrimary);
+}
+
+.file-preview-container {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--theme-inputBackground);
+  border: 1px solid var(--theme-border);
+}
+
+.file-preview {
+  width: 100%;
+  aspect-ratio: 16/9;
+  position: relative;
+}
+
+.file-preview img,
+.file-preview video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.file-controls {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.file-counter {
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.delete-button {
+  background: rgba(220, 53, 69, 0.8);
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.delete-button:hover {
+  background: rgba(220, 53, 69, 1);
+}
+
+.audio-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: var(--theme-inputBackground);
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+.audio-preview audio {
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 12px;
+}
+
+.audio-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.audio-filename {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--theme-textPrimary);
+  word-break: break-word;
+}
+
+.audio-size {
+  font-size: 12px;
+  color: var(--theme-textSecondary);
+}
+
+.submit-button {
+  background: var(--theme-buttonPrimary);
+  color: var(--theme-textWhite);
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+  background: var(--theme-buttonHover);
+}
+
+.submit-button:disabled {
+  background: var(--theme-textLight);
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: var(--theme-error);
+  font-size: 14px;
+  margin-top: 8px;
+  padding: 8px;
+  background: var(--theme-inputBackground);
+  border: 1px solid var(--theme-error);
+  border-radius: 4px;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: var(--theme-cardBackground);
+  width: 100%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: absolute;
+  bottom: 0;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  animation: slideUp 0.3s ease-out;
+  box-shadow: 0 -4px 20px var(--theme-shadowDark);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--theme-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--theme-cardBackground);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--theme-textPrimary);
+  font-weight: 600;
+}
+
+.close-button {
+  background: var(--theme-inputBackground) !important;
+  border: 1px solid var(--theme-border) !important;
+  font-size: 18px !important;
+  color: var(--theme-textSecondary) !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+  font-weight: bold !important;
+  position: relative !important;
+  flex-shrink: 0 !important;
+}
+
+.close-button:hover {
+  background: var(--theme-error) !important;
+  color: var(--theme-textWhite) !important;
+  border-color: var(--theme-error) !important;
+}
+
+.close-button:active {
+  background: #c62828 !important;
+  transform: translateY(1px) !important;
+}
+
+.modal-body {
+  padding: 8px 0;
+  background: var(--theme-cardBackground);
+}
+
+.modal-item {
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-bottom: 1px solid var(--theme-borderLight);
+}
+
+.modal-item:last-child {
+  border-bottom: none;
+}
+
+.modal-item:hover {
+  background-color: var(--theme-inputBackground);
+}
+
+.modal-item:active {
+  background-color: var(--theme-buttonPrimary);
+}
+
+.modal-item:active .complaint-item h3,
+.modal-item:active .complaint-item p {
+  color: var(--theme-textWhite);
+}
+
+.complaint-item {
+  padding: 16px;
+}
+
+.complaint-item h3 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--theme-textPrimary);
+  line-height: 1.3;
+}
+
+.complaint-item p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--theme-textSecondary);
+  line-height: 1.4;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .ecomplaint-container {
+    padding: 8px;
+  }
+  
+  .ecomplaint-card {
+    min-height: calc(100vh - 16px);
+  }
+  
+  .ecomplaint-form {
+    padding: 16px;
+  }
+  
+  .ecomplaint-header {
+    padding: 12px 16px;
+  }
+  
+  .ecomplaint-header h2 {
+    font-size: 18px;
+  }
+}
