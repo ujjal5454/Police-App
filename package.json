@@ -10,6 +10,8 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.8.4",
     "leaflet": "^1.9.4",
+    "mongoose-paginate-v2": "^1.9.1",
+    "multer": "^2.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.5.0",

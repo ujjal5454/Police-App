@@ -56,10 +56,80 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
+      // Industry-level logout implementation
+      console.log('Starting logout process...');
+
+      // 1. Call backend logout endpoint to invalidate server-side session/token
       await axios.post('/auth/logout');
+
+      // 2. Clear all client-side storage
+      localStorage.clear();
+      sessionStorage.clear();
+
+      // 3. Clear any cached user data
       setUser(null);
+
+      // 4. Clear any IndexedDB data (for security)
+      if ('indexedDB' in window) {
+        try {
+          // Clear incident database
+          const deleteIncidentDB = indexedDB.deleteDatabase('IncidentDB');
+          deleteIncidentDB.onsuccess = () => console.log('IncidentDB cleared');
+
+          // Clear e-complaint database
+          const deleteComplaintDB = indexedDB.deleteDatabase('EComplaintDB');
+          deleteComplaintDB.onsuccess = () => console.log('EComplaintDB cleared');
+
+          // Clear news database
+          const deleteNewsDB = indexedDB.deleteDatabase('NewsDB');
+          deleteNewsDB.onsuccess = () => console.log('NewsDB cleared');
+
+          // Clear notice database
+          const deleteNoticeDB = indexedDB.deleteDatabase('NoticeDB');
+          deleteNoticeDB.onsuccess = () => console.log('NoticeDB cleared');
+        } catch (dbError) {
+          console.warn('Failed to clear some databases:', dbError);
+        }
+      }
+
+      // 5. Revoke any blob URLs to prevent memory leaks
+      if (window.URL && window.URL.revokeObjectURL) {
+        // This will be handled by individual components, but good practice
+        console.log('Blob URLs should be cleaned by components');
+      }
+
+      // 6. Clear any service worker caches (if implemented)
+      if ('serviceWorker' in navigator && 'caches' in window) {
+        try {
+          const cacheNames = await caches.keys();
+          await Promise.all(
+            cacheNames.map(cacheName => caches.delete(cacheName))
+          );
+          console.log('Service worker caches cleared');
+        } catch (cacheError) {
+          console.warn('Failed to clear service worker caches:', cacheError);
+        }
+      }
+
+      // 7. Clear any timers or intervals (if any are set globally)
+      // This would be handled by individual components
+
+      // 8. Reset axios defaults
+      delete axios.defaults.headers.common['Authorization'];
+
+      console.log('Logout completed successfully');
+
     } catch (error) {
       console.error('Logout failed:', error);
+
+      // Even if server logout fails, clear client-side data for security
+      localStorage.clear();
+      sessionStorage.clear();
+      setUser(null);
+      delete axios.defaults.headers.common['Authorization'];
+
+      // Don't throw error - logout should always succeed on client side
+      console.log('Client-side logout completed despite server error');
     }
   };
 

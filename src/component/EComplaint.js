@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './EComplaint.css';
 import imageIcon from '../assets/icons/image.png';
 import audioIcon from '../assets/icons/audio.png';
 import videoIcon from '../assets/icons/video.png';
+import axios from 'axios';
 
 const EComplaint = () => {
   const navigate = useNavigate();
+  const locationState = useLocation();
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
   const [selectedComplaintType, setSelectedComplaintType] = useState('');
@@ -65,6 +67,28 @@ const EComplaint = () => {
     }
   ];
 
+  // Handle location updates from LocationPicker
+  useEffect(() => {
+    if (locationState.state?.fromEComplaint &&
+        locationState.state?.selectedLocation &&
+        locationState.state?.previousFormData) {
+
+      const prevData = locationState.state.previousFormData;
+
+      // Restore form data
+      setDescription(prevData.description || '');
+      setSelectedComplaintType(prevData.selectedComplaintType || '');
+      setLocation(locationState.state.selectedLocation.address || '');
+
+      // Restore media files
+      if (prevData.media) {
+        setImages(prevData.media.images || []);
+        setAudios(prevData.media.audio || []);
+        setVideos(prevData.media.video || []);
+      }
+    }
+  }, [locationState.key, locationState.state]);
+
   // Cleanup blob URLs when component unmounts
   useEffect(() => {
     return () => {
@@ -88,6 +112,24 @@ const EComplaint = () => {
   const handleComplaintTypeSelect = (complaintType) => {
     setSelectedComplaintType(complaintType.title);
     setShowComplaintTypeModal(false);
+  };
+
+  const handleLocationSelect = () => {
+    const currentState = {
+      previousFormData: {
+        description: description,
+        selectedComplaintType: selectedComplaintType,
+        media: {
+          images: images,
+          audio: audios,
+          video: videos
+        }
+      },
+      fromEComplaint: true,
+      selectedLocation: location ? { address: location } : null
+    };
+
+    navigate('/location-picker', { state: currentState });
   };
 
   const handleImageUpload = (e) => {
@@ -188,33 +230,82 @@ const EComplaint = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    
+
     if (!description.trim()) {
       setError('Please enter a description');
       return;
     }
-    
+
     if (!location.trim()) {
       setError('Please choose a location');
       return;
     }
-    
+
     if (!selectedComplaintType) {
       setError('Please select nature of complaint');
       return;
     }
 
     setIsSubmitting(true);
-    
+
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Success - navigate back or show success message
-      alert('Complaint submitted successfully!');
+      // Prepare complaint data (following incident pattern exactly)
+      const complaintData = {
+        type: selectedComplaintType,
+        description: description.trim(),
+        location: {
+          type: 'Point',
+          coordinates: [27.7172, 85.3240], // Default coordinates, will be updated by location picker
+          address: location
+        },
+        media: {
+          images: images.map(img => ({
+            url: img.url,
+            filename: img.name,
+            size: img.size
+          })),
+          audio: audios.map(audio => ({
+            url: audio.url,
+            filename: audio.name,
+            size: audio.size
+          })),
+          video: videos.map(video => ({
+            url: video.url,
+            filename: video.name,
+            size: video.size
+          }))
+        }
+      };
+
+      console.log('Submitting e-complaint to MongoDB (incident pattern):', complaintData);
+
+      // Submit to MongoDB via API (same as incident)
+      const response = await axios.post('http://localhost:5000/api/ecomplaints', complaintData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true
+      });
+
+      console.log('E-complaint saved successfully:', response.data);
+
+      // Success - show success message
+      const complaint = response.data.complaint;
+      alert(`Complaint submitted successfully!\nComplaint ID: ${complaint._id}\nStatus: ${complaint.status.toUpperCase()}\nThank you for your submission.`);
+
+      // Clear form and navigate back
+      setDescription('');
+      setLocation('');
+      setSelectedComplaintType('');
+      setImages([]);
+      setAudios([]);
+      setVideos([]);
+
       navigate('/home');
     } catch (err) {
-      setError('Failed to submit complaint. Please try again.');
+      console.error('Failed to submit complaint:', err);
+      const errorMessage = err.response?.data?.message || err.message || 'Failed to submit complaint';
+      setError(`Failed to submit complaint: ${errorMessage}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -246,7 +337,7 @@ const EComplaint = () => {
             required
           />
 
-          <div className="location-selector" onClick={() => navigate('/location-picker')}>
+          <div className="location-selector" onClick={handleLocationSelect}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="#1976D2">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
             </svg>

@@ -99,9 +99,13 @@ const LocationPicker = () => {
       previousFormData: location.state?.previousFormData || {},
       incidentType: location.state?.incidentType,
       fromReportIncident: location.state?.fromReportIncident,
-      fromPublicEye: location.state?.fromPublicEye
+      fromPublicEye: location.state?.fromPublicEye,
+      fromEComplaint: location.state?.fromEComplaint
     };
-    if (location.state?.fromPublicEye) {
+
+    if (location.state?.fromEComplaint) {
+      navigate('/e-complaint', { state: navigationState, replace: true });
+    } else if (location.state?.fromPublicEye) {
       navigate('/public-eye', { state: navigationState, replace: true });
     } else {
       navigate('/incident-details', { state: navigationState, replace: true });
@@ -118,9 +122,13 @@ const LocationPicker = () => {
         previousFormData: location.state?.previousFormData || {},
         incidentType: location.state?.incidentType,
         fromReportIncident: location.state?.fromReportIncident,
-        fromPublicEye: location.state?.fromPublicEye
+        fromPublicEye: location.state?.fromPublicEye,
+        fromEComplaint: location.state?.fromEComplaint
       };
-      if (location.state?.fromPublicEye) {
+
+      if (location.state?.fromEComplaint) {
+        navigate('/e-complaint', { state: navigationState, replace: true });
+      } else if (location.state?.fromPublicEye) {
         navigate('/public-eye', { state: navigationState, replace: true });
       } else {
         navigate('/incident-details', { state: navigationState, replace: true });

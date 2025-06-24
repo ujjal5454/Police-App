@@ -116,10 +116,44 @@ router.get('/me', auth, async (req, res) => {
   }
 });
 
-// Logout user
+// Logout user - Industry level implementation
 router.post('/logout', (req, res) => {
-  res.clearCookie('token');
-  res.json({ message: 'Logged out successfully' });
+  try {
+    // Clear the HTTP-only cookie
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict'
+    });
+
+    // Clear session if it exists
+    if (req.session) {
+      req.session.destroy((err) => {
+        if (err) {
+          console.error('Session destruction error:', err);
+        }
+      });
+    }
+
+    // Log the logout event for security monitoring
+    console.log(`User logout at ${new Date().toISOString()}`);
+
+    // Send success response
+    res.status(200).json({
+      message: 'Logged out successfully',
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    console.error('Logout error:', error);
+
+    // Even if there's an error, clear the cookie for security
+    res.clearCookie('token');
+    res.status(200).json({
+      message: 'Logged out successfully',
+      timestamp: new Date().toISOString()
+    });
+  }
 });
 
 // Check if user is authenticated

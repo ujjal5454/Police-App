@@ -37,10 +37,28 @@ const Settings = () => {
 
   const handleLogout = async () => {
     try {
+      // Show confirmation dialog for security
+      const confirmLogout = window.confirm(
+        'Are you sure you want to log out? This will clear all your local data and end your session.'
+      );
+
+      if (!confirmLogout) {
+        return;
+      }
+
+      console.log('User confirmed logout');
+
+      // Call the enhanced logout function
       await logout();
-      navigate('/login'); // Redirect to login page after logout
+
+      // Force page reload to ensure complete cleanup
+      window.location.href = '/login';
+
     } catch (error) {
       console.error('Error logging out:', error);
+
+      // Fallback: force navigation even if logout fails
+      window.location.href = '/login';
     }
   };
 
