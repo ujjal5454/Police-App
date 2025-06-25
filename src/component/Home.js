@@ -49,6 +49,9 @@ const Home = () => {
       case 'e-Complaint':
         navigate('/e-complaint');
         break;
+      case 'Police Stations Nearby':
+        navigate('/police-station-nearby');
+        break;
       default:
         // Handle other services
         break;

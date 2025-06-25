@@ -33,6 +33,7 @@ import UserGuide from './component/UserGuide';
 import FAQ from './component/FAQ';
 import FM from './component/FM';
 import EComplaint from './component/EComplaint';
+import PoliceStationNearby from './component/PoliceStationNearby';
 
 const ProtectedRoute = ({ children, allowSkip = false }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -203,6 +204,11 @@ function App() {
           <Route path="/e-complaint" element={
             <ProtectedRoute allowSkip={true}>
               <EComplaint />
+            </ProtectedRoute>
+          } />
+          <Route path="/police-station-nearby" element={
+            <ProtectedRoute allowSkip={true}>
+              <PoliceStationNearby />
             </ProtectedRoute>
           } />
         </Routes>
